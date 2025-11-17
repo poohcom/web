@@ -1,1 +1,0 @@
-{"version":3,"file":"InfoInputScreen.d.ts","sourceRoot":"","sources":["../../src/screens/InfoInputScreen.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAc,MAAM,qBAAqB,CAAC;AAG9D,qBAAa,eAAe;IACxB,OAAO,CAAC,WAAW,CAAc;IACjC,OAAO,CAAC,SAAS,CAAiB;IAClC,OAAO,CAAC,aAAa,CAAoB;gBAE7B,WAAW,EAAE,WAAW;IAKpC,IAAI;IA4LJ,OAAO;CAKV"}
