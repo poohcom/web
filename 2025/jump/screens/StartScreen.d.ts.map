@@ -1,0 +1,1 @@
+{"version":3,"file":"StartScreen.d.ts","sourceRoot":"","sources":["../../src/screens/StartScreen.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAc,MAAM,qBAAqB,CAAC;AAE9D,qBAAa,WAAW;IACpB,OAAO,CAAC,WAAW,CAAc;IACjC,OAAO,CAAC,SAAS,CAAiB;gBAEtB,WAAW,EAAE,WAAW;IAKpC,IAAI;IAiFJ,OAAO;CAKV"}

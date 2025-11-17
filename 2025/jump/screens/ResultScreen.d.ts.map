@@ -1,0 +1,1 @@
+{"version":3,"file":"ResultScreen.d.ts","sourceRoot":"","sources":["../../src/screens/ResultScreen.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAc,MAAM,qBAAqB,CAAC;AAG9D,qBAAa,YAAY;IACrB,OAAO,CAAC,WAAW,CAAc;IACjC,OAAO,CAAC,SAAS,CAAiB;IAClC,OAAO,CAAC,WAAW,CAAa;gBAEpB,WAAW,EAAE,WAAW;IAK9B,IAAI;IAyIV,OAAO;CAKV"}
