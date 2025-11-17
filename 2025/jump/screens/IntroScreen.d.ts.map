@@ -1,1 +1,0 @@
-{"version":3,"file":"IntroScreen.d.ts","sourceRoot":"","sources":["../../src/screens/IntroScreen.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAc,MAAM,qBAAqB,CAAC;AAI9D,qBAAa,WAAW;IACpB,OAAO,CAAC,WAAW,CAAc;IACjC,OAAO,CAAC,GAAG,CAAiC;IAC5C,OAAO,CAAC,SAAS,CAAiB;IAClC,OAAO,CAAC,SAAS,CAAuB;gBAE5B,WAAW,EAAE,WAAW;IAK9B,IAAI;IAoGV,OAAO;CAkBV"}

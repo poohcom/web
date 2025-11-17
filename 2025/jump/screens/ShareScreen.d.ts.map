@@ -1,1 +1,0 @@
-{"version":3,"file":"ShareScreen.d.ts","sourceRoot":"","sources":["../../src/screens/ShareScreen.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAc,MAAM,qBAAqB,CAAC;AAE9D,qBAAa,WAAW;IACpB,OAAO,CAAC,WAAW,CAAc;IACjC,OAAO,CAAC,SAAS,CAAiB;gBAEtB,WAAW,EAAE,WAAW;IAKpC,IAAI;YAkIU,aAAa;IAmE3B,OAAO,CAAC,WAAW;IAgBnB,OAAO;CAKV"}
