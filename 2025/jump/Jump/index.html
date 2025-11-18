@@ -20,6 +20,9 @@
             align-items: center;
             margin: 0;
             padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
         #game-container {
             /* 기본 게임 해상도: 720x1280 (비율 9:16) */
@@ -87,6 +90,9 @@
             width: 100% !important;
             height: 100% !important;
             object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
         .ui-layer {
             position: absolute;
@@ -124,31 +130,13 @@
             width: clamp(200px, 40vw, 300px);
         }
     </style>
-  <script type="module" crossorigin src="/web/2025/jump/Jump/assets/index-DpeKVpH7.js"></script>
+  <script type="module" crossorigin src="/web/2025/jump/Jump/assets/index-BnbmNQVq.js"></script>
   <link rel="stylesheet" crossorigin href="/web/2025/jump/Jump/assets/index--UeVwYXS.css">
 </head>
 <body>
     <div id="game-container">
         <div id="ui-layer" class="ui-layer"></div>
     </div>
-
-    <div id="build-info" style="
-      position: fixed;
-      bottom: 5px;
-      right: 5px;
-      background: rgba(0, 0, 0, 0.7);
-      color: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 11px;
-      font-family: monospace;
-      z-index: 10000;
-      pointer-events: none;
-      user-select: none;
-    ">
-      <div>Version: 1.0.0</div>
-      <div>Build: 2025. 11. 18. 오후 05:14:10</div>
-    </div>
 </body>
 </html>
 
