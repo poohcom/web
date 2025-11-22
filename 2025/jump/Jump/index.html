@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Jump Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh; /* 동적 뷰포트 높이 (최신 브라우저 지원) */
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        #game-container {
+            /* 기본 게임 해상도: 720x1280 (비율 9:16) */
+            position: relative;
+            background: #87CEEB;
+            overflow: hidden;
+            transform-origin: center center;
+        }
+        
+        /* 모바일: 전체 화면 사용 */
+        @media (max-width: 720px) {
+            #game-container {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+            }
+        }
+        
+        /* PC: 게임 비율 유지하며 가운데 정렬 */
+        @media (min-width: 721px) {
+            #game-container {
+                /* 화면 크기에 맞게 스케일링하되, 원본 비율(720x1280) 유지 */
+                /* 너비 기준과 높이 기준 중 작은 값으로 스케일링 */
+                width: min(720px, 100vw, calc(100vh * 720 / 1280));
+                height: min(1280px, calc(100vw * 1280 / 720), 100vh);
+                /* 중앙 정렬 보장 */
+                margin: auto;
+            }
+        }
+
+        
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        .ui-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .ui-layer * {
+            pointer-events: auto;
+        }
+        button {
+            font-size: clamp(16px, 2vw, 24px);
+            padding: clamp(10px, 1.5vw, 15px) clamp(20px, 3vw, 30px);
+            border: none;
+            border-radius: 10px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin: clamp(5px, 1vw, 10px);
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        input[type="text"] {
+            font-size: clamp(16px, 2vw, 20px);
+            padding: clamp(8px, 1vw, 10px);
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            width: clamp(200px, 40vw, 300px);
+        }
+    </style>
+  <script type="module" crossorigin src="/web/2025/jump/Jump/assets/index-DITusyUA.js"></script>
+  <link rel="stylesheet" crossorigin href="/web/2025/jump/Jump/assets/index--UeVwYXS.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-layer" class="ui-layer"></div>
+    </div>
+</body>
+</html>
+
