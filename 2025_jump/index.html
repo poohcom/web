@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Jump Game</title>
     <style>
         * {
@@ -24,6 +24,7 @@
             position: fixed;
             top: 0;
             left: 0;
+            touch-action: manipulation;
         }
         
         #ui-layer {
@@ -53,6 +54,9 @@
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
+            pointer-events: auto;
+            position: relative;
+            z-index: 1;
         }
         .ui-layer {
             position: absolute;
@@ -76,6 +80,8 @@
             color: white;
             cursor: pointer;
             margin: clamp(5px, 1vw, 10px);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         button:hover {
             background: #45a049;
@@ -91,8 +97,8 @@
             width: clamp(200px, 40vw, 300px);
         }
     </style>
-  <script type="module" src="./assets/index-BKe1l7Eo.js"></script>
-  <link rel="modulepreload" href="./assets/pixi-BrRhwPSi.js">
+  <script type="module" src="./assets/index-CWv3t3QA.js"></script>
+  <link rel="modulepreload" href="./assets/pixi-BMhNc-dA.js">
   <link rel="stylesheet" href="./assets/index.css">
 </head>
 <body>
