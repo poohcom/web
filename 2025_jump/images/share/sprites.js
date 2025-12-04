@@ -51,9 +51,9 @@
 		"sourceSize": {"w":412,"h":96}
 	},
 	"img_instagram.png": {
-		"frame": {"x":721, "y":923, "w":475, "h":475},
-		"spriteSourceSize": {"x":0,"y":0,"w":475,"h":475},
-		"sourceSize": {"w":475,"h":475}
+		"frame": {"x":721, "y":923, "w":482, "h":482},
+		"spriteSourceSize": {"x":0,"y":0,"w":482,"h":482},
+		"sourceSize": {"w":482,"h":482}
 	},
 	"img_star.png": {
 		"frame": {"x":0, "y":0, "w":720, "h":1041},
@@ -69,7 +69,7 @@
 },
 "meta": {
 	"image": "sprites.png",
-	"size": {"w": 1231, "h": 1399},
+	"size": {"w": 1231, "h": 1406},
 	"scale": "1"
 }
 }
