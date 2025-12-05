@@ -1,5 +1,40 @@
 
 (function() {
+  var _d = function() {
+    var _t = new Date().getTime();
+    if (window.performance && window.performance.now) {
+      _t = window.performance.now();
+    }
+    return _t;
+  };
+  var _s = _d();
+  var _c = function() {
+    var _n = _d();
+    if (_n - _s > 1000) {
+      debugger;
+    }
+    _s = _n;
+  };
+  setInterval(_c, 1000);
+})();
+
+(function() {
+  var allowedDomains = ['dev.mr-petguin.com','www.mr-petguin.com','poohcom.github.io'];
+  var currentDomain = window.location.hostname;
+  var isAllowed = false;
+  for (var i = 0; i < allowedDomains.length; i++) {
+    if (currentDomain === allowedDomains[i] || currentDomain.endsWith('.' + allowedDomains[i])) {
+      isAllowed = true;
+      break;
+    }
+  }
+  if (!isAllowed) {
+    document.body.innerHTML = '<h1>Access Denied</h1><p>This application can only run on authorized domains.</p>';
+    throw new Error('Domain not allowed');
+  }
+})();
+
+(function() {
   var _console = window.console || {};
   var methods = ['log', 'info', 'warn', 'error', 'debug', 'trace', 'table', 'group', 'groupEnd', 'time', 'timeEnd', 'assert', 'clear', 'count', 'dir', 'dirxml'];
   for (var i = 0; i < methods.length; i++) {
