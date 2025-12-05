@@ -88,4 +88,33 @@
             border: 2px solid #ccc;
             border-radius: 5px;
             width: clamp(200px, 40vw, 300px);
-        }</style><script defer="defer" src="bundle.8c37b6e09ba536ce3de0.js"></script></head><body><div id="game-container"><div id="ui-layer" class="ui-layer"></div></div><script type="module" src="./main.ts"></script></body></html>
+        }</style><script>// 시작 버튼 클릭 시 호출되는 함수
+        // auth_code와 nickname을 파라미터로 받아서 처리합니다
+        function startGame(authCode, nickname) {
+            console.log('[index.html] Start button clicked with auth_code:', authCode, 'nickname:', nickname);
+            
+            // GameManager에 auth_code와 nickname 저장
+            if (window.gameManager) {
+                window.gameManager.setGameData({ 
+                    authCode: authCode || '', 
+                    nickname: nickname || '' 
+                });
+                
+                // 로딩 화면으로 이동
+                if (window.gameManager.ScreenType) {
+                    window.gameManager.showScreen(window.gameManager.ScreenType.LOADING);
+                } else {
+                    // ScreenType이 아직 로드되지 않았으면 직접 문자열 사용
+                    window.gameManager.showScreen('loading');
+                }
+            } else {
+                console.error('[index.html] gameManager not found');
+            }
+        }
+        
+        // 게임 초기화 후 GameManager를 window에 등록하기 위한 함수
+        window.registerGameManager = function(gameManager, ScreenType) {
+            window.gameManager = gameManager;
+            // ScreenType도 window에 등록
+            window.gameManager.ScreenType = ScreenType;
+        };</script><script defer="defer" src="bundle.09da8fdee9787a52c300.js"></script></head><body><div id="game-container"><div id="ui-layer" class="ui-layer"></div></div><script type="module" src="./main.ts"></script></body></html>
