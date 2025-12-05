@@ -88,10 +88,40 @@
             border: 2px solid #ccc;
             border-radius: 5px;
             width: clamp(200px, 40vw, 300px);
+        }</style><style>#start-button {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 60px;
+            font-size: 24px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 2000;
+            font-family: 'RoundedFixedsys', Arial, sans-serif;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        #start-button:hover {
+            background: #ff5252;
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        #start-button:active {
+            transform: translate(-50%, -50%) scale(0.95);
         }</style><script>// 시작 버튼 클릭 시 호출되는 함수
         // auth_code와 nickname을 파라미터로 받아서 처리합니다
         function startGame(authCode, nickname) {
-            console.log('[index.html] Start button clicked with auth_code:', authCode, 'nickname:', nickname);
+            //nickname='re';
+            // 시작 버튼 숨기기
+            const startButton = document.getElementById('start-button');
+            if (startButton) {
+                startButton.style.display = 'none';
+            }
             
             // GameManager에 auth_code와 nickname 저장
             if (window.gameManager) {
@@ -117,4 +147,4 @@
             window.gameManager = gameManager;
             // ScreenType도 window에 등록
             window.gameManager.ScreenType = ScreenType;
-        };</script><script defer="defer" src="bundle.09da8fdee9787a52c300.js"></script></head><body><div id="game-container"><div id="ui-layer" class="ui-layer"></div></div><script type="module" src="./main.ts"></script></body></html>
+        };</script><script defer="defer" src="bundle.fd60841be43d66a8e647.js"></script></head><body><button id="start-button" onclick="startGame('', '')">시작</button><div id="game-container"><div id="ui-layer" class="ui-layer"></div></div><script type="module" src="./main.ts"></script></body></html>
