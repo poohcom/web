@@ -1,11 +1,3 @@
-
-(function() {
-  var _console = window.console || {};
-  var methods = ['log', 'info', 'warn', 'error', 'debug', 'trace', 'table', 'group', 'groupEnd', 'time', 'timeEnd', 'assert', 'clear', 'count', 'dir', 'dirxml'];
-  for (var i = 0; i < methods.length; i++) {
-    _console[methods[i]] = function() {};
-  }
-})();
 {
 "frames": {
 	"1L.png": {
