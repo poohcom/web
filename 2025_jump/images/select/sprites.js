@@ -6,23 +6,23 @@
 		"sourceSize": {"w":244,"h":244}
 	},
 	"2L.png": {
-		"frame": {"x":434, "y":1613, "w":129, "h":195},
+		"frame": {"x":579, "y":1489, "w":129, "h":195},
 		"spriteSourceSize": {"x":50,"y":26,"w":244,"h":244},
 		"sourceSize": {"w":244,"h":244}
 	},
 	"3L.png": {
-		"frame": {"x":579, "y":1281, "w":129, "h":207},
+		"frame": {"x":578, "y":1281, "w":129, "h":207},
 		"spriteSourceSize": {"x":50,"y":14,"w":244,"h":244},
 		"sourceSize": {"w":244,"h":244}
 	},
 	"4L.png": {
-		"frame": {"x":434, "y":1408, "w":144, "h":204},
+		"frame": {"x":434, "y":1604, "w":144, "h":204},
 		"spriteSourceSize": {"x":50,"y":17,"w":244,"h":244},
 		"sourceSize": {"w":244,"h":244}
 	},
 	"5L.png": {
-		"frame": {"x":434, "y":1408, "w":144, "h":204},
-		"spriteSourceSize": {"x":50,"y":17,"w":244,"h":244},
+		"frame": {"x":430, "y":1408, "w":147, "h":195},
+		"spriteSourceSize": {"x":47,"y":26,"w":244,"h":244},
 		"sourceSize": {"w":244,"h":244}
 	},
 	"bg_01.png": {
