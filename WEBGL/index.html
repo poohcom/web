@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Device Redirect</title>
+  <meta name="description" content="Mobile/PC" />
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; padding: 2rem; line-height:1.6; }
+    .card { border:1px solid #ddd; border-radius:8px; padding:1rem; max-width:900px; margin:0 auto; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    code { background:#f5f5f5; padding:0.15rem 0.4rem; border-radius:4px; }
+  </style>
+</head>
+<body>
+  <script>
+  (function () {
+    try {
+	  var origin = window.location.origin;
+      var pathname = window.location.pathname;
+	  
+	  function getPathWithoutFile(path) {
+	  path = path.replace("webStart", "");
+    if (path.endsWith("/")) return path;
+    var lastSegment = path.substring(path.lastIndexOf("/") + 1);
+    if (lastSegment.includes(".")) {
+      return path.substring(0, path.lastIndexOf("/") + 1);
+    }
+    return path;
+  }
+	  var cleanPath = getPathWithoutFile(pathname);
+      var search = window.location.search || '';
+      var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      var prefix = isMobile ? 'Mobile/index.html' : 'Standalone/index.html';
+
+      var target = origin + cleanPath + prefix + search ;
+      window.location.replace(target);
+    } catch (e) {
+      console && console.error && console.error('redirect script error:', e);
+    }
+  })();
+  </script>
+
+  <noscript>
+    <p style="color:#b33; text-align:center; margin-top:1rem;">
+      JavaScript error
+    </p>
+  </noscript>
+</body>
+</html>

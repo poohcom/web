@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>CryptoinPoker</title>
+
+  <link rel="stylesheet" href="TemplateData/style.css">
+</head>
+
+<body>
+    <!-- ✅ 설치 관련 UI
+      <button id="install-btn" style="display:none; margin:12px;">앱 설치하기</button>
+      <div id="ios-install-tip" style="display:none; background:#fff8c4; padding:10px;">
+        iOS 사용자라면 Safari에서 <strong>공유 ⬆</strong> → <strong>홈 화면에 추가</strong>를 눌러 앱을 설치해 주세요.
+      </div>
+    -->
+    <!-- Unity 앱 -->
+    <div id="unity-container" class="unity-desktop">
+        <canvas id="unity-canvas" width="1280" height="720"></canvas>
+        <div id="unity-loading-bar">
+            <div id="unity-logo"></div>
+            <div id="unity-loader-message">" Immersive Real Casino Experience "</div>
+            <div id="unity-loader-lable">0%</div>
+        </div>
+        <div id="unity-warning"></div>
+        <div id="unity-footer">
+            <div id="unity-webgl-logo"></div>
+            <div id="unity-fullscreen-button"></div>
+            <div id="unity-build-title">CryptoinPoker</div>
+        </div>
+    </div>
+
+    <script src="StreamingAssets/NoSleep.min.js"></script>
+
+    <script>
+
+        
+
+        // 파라미터 추출
+        const url = new URL(window.location.href);
+        const params = url.searchParams;
+
+        //    const startUrl = url.pathname + url.search;
+        // 이전 페이지 주소 + 현재 파라미터 조합
+        const referrer = document.referrer;
+        let startUrl;
+
+        if (referrer) {
+            // 이전 페이지가 있는 경우: 이전 페이지 주소 + 현재 파라미터
+            const referrerUrl = new URL(referrer);
+            startUrl = referrerUrl.pathname + url.search;
+        } else {
+            // 이전 페이지가 없는 경우: 현재 주소 + 파라미터
+            startUrl = url.pathname + url.search;
+        }
+
+        // 브라우저 주소창 표시용 (선택사항)
+        const displayUrl = url.origin + url.pathname + url.search;
+
+        // 주소창을 이전 페이지로 변경 (선택사항)
+        let baseUrl = url.origin + url.pathname.replace(/\/[^\/]*$/, '/'); // 현재 페이지의 디렉토리
+        if (referrer) {
+            const referrerUrl = new URL(referrer);
+            const newUrl = referrerUrl.origin + referrerUrl.pathname + url.search;
+            // 주소창 변경 (히스토리 추가하지 않음)
+            window.history.replaceState(null, '', newUrl);
+            // 리소스 로딩을 위한 기본 URL 설정 (현재 페이지의 디렉토리 유지)
+            // baseUrl은 현재 페이지 기준으로 유지하여 리소스 경로 문제 방지
+        }
+
+        // 전역 변수로 설정하여 다른 스크립트에서 사용 가능하게 함
+        window.currentBaseUrl = baseUrl;
+
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+		
+		const logo = document.getElementById("unity-logo");
+		let agent = params.get("agent") || "CryptoinPoker";
+		let currentBaseUrl = window.currentBaseUrl;
+		
+		let logoImage = `${currentBaseUrl}../Skin/${agent}/LogoIcon.png`;
+
+		checkImageExists(logoImage).then(exists => {
+		  if (exists && logo) {
+			logo.style.backgroundImage = `url("${logoImage}")`;
+		  }
+		});
+
+        (async function () {
+            // 전역 변수에서 baseUrl 가져오기
+            let currentBaseUrl = window.currentBaseUrl;
+
+            let appIcon = `${currentBaseUrl}../Skin/${agent}/app_icon.png`;
+
+            // 이미지 존재 여부 체크
+            const exists = await checkImageExists(appIcon);
+            if (!exists) {
+                agent = "CryptoinPoker";
+                appIcon = `${currentBaseUrl}../Skin/${agent}/app_icon.png`;
+                console.log(agent);
+            }
+
+			const res = await fetch(`${currentBaseUrl}../Skin/${agent}/skin_data.json`);
+			let appName = agent;
+			if (res.ok) {
+			  const data = await res.json();
+			  if (data?.appName) {
+				appName = data.appName;
+				document.title = appName;
+				const titleEl = document.getElementById("unity-build-title");
+				if (titleEl) titleEl.textContent = appName;
+			  }
+			}
+			
+            const manifest = {
+                name: appName,
+                short_name: appName,
+                start_url: startUrl,
+                display: "fullscreen",
+                background_color: "#000000",
+                theme_color: "#000000",
+                icons: [
+                    {
+                        src: appIcon,
+                        sizes: "512x512",
+                        type: "image/png"
+                    }
+                ]
+            };
+
+            const favicon = document.createElement("link");
+            favicon.rel = "icon";
+            favicon.href = `${currentBaseUrl}../Skin/${agent}/install.ico`;
+            document.head.appendChild(favicon);
+
+            const appleIcon = document.createElement("link");
+            appleIcon.rel = "apple-touch-icon";
+            appleIcon.href = appIcon;
+            document.head.appendChild(appleIcon);
+
+            const blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });
+            const manifestURL = URL.createObjectURL(blob);
+            const manifestTag = document.createElement("link");
+            manifestTag.rel = "manifest";
+            manifestTag.href = manifestURL;
+            document.head.appendChild(manifestTag);
+
+
+        })();
+    </script>
+
+    <script>
+    const argumentsArray = [];
+    params.forEach((value, key) => argumentsArray.push(`${key}=${value}`));
+
+    const buildUrl =`${window.currentBaseUrl}Build`;
+	 const loaderUrl = buildUrl + "/Standalone.loader.js" + "?v=" + Date.now();
+    const config = {
+      arguments: argumentsArray,
+      dataUrl: buildUrl + "/Standalone.data.unityweb"+ "?v=" + Date.now(),
+      frameworkUrl: buildUrl + "/Standalone.framework.js.unityweb"+ "?v=" + Date.now(),
+        codeUrl: buildUrl + "/Standalone.wasm.unityweb"+ "?v=" + Date.now(),
+      streamingAssetsUrl: `${window.currentBaseUrl}StreamingAssets`,
+      companyName: "HashGames",
+      productName: "CryptoInPoker",
+      productVersion: "0.0.98",
+      showBanner: unityShowBanner
+    };
+
+    const canvas = document.getElementById("unity-canvas");
+    const loadingBar = document.getElementById("unity-loading-bar");
+    const label = document.getElementById("unity-loader-lable");
+    const fullscreenButton = document.getElementById("unity-fullscreen-button");
+    const container = document.getElementById("unity-container");
+    const warningBanner = document.getElementById("unity-warning");
+
+    function unityShowBanner(msg, type) {
+      const div = document.createElement("div");
+      div.innerHTML = msg;
+      div.style = `background:${type === 'error' ? 'red' : 'yellow'}; padding:10px;`;
+      warningBanner.appendChild(div);
+      warningBanner.style.display = 'block';
+      if (type !== 'error') setTimeout(() => {
+        warningBanner.removeChild(div);
+        if (!warningBanner.children.length) warningBanner.style.display = 'none';
+      }, 5000);
+    }
+
+    // 모바일 대응
+    const noSleep = new NoSleep();
+    function enableNoSleep() {
+      noSleep.enable();
+      console.log("NoSleep enabled");
+    }
+
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      container.className = "unity-mobile";
+      canvas.className = "unity-mobile";
+      document.addEventListener('click', enableNoSleep, { once: true });
+      document.addEventListener('touchstart', enableNoSleep, { once: true });
+		function onResize() {
+  // Unity SafeArea 갱신 등 리사이즈 로직
+  window.unityInstance.SendMessage('HomeWindow(Clone)', 'RefreshAll');
+}
+
+// 1) orientationchange로 초동 감지
+window.addEventListener('orientationchange', () => {
+  onResize();                    // 즉시 반영 시도
+  setTimeout(onResize, 300);     // 300ms 뒤 재시도
+});
+
+// 2) 비주얼 뷰포트 변화도 감지
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', onResize);
+  window.visualViewport.addEventListener('scroll', onResize);
+}
+
+// 3) 기본 resize 이벤트도 남겨두기
+window.addEventListener('resize', onResize);
+    } else {
+      canvas.style.width = "1280px";
+      canvas.style.height = "720px";
+    }
+
+    // Unity 로딩
+    loadingBar.style.display = "block";
+    const script = document.createElement("script");
+   script.src = loaderUrl;
+    script.onload = () => {
+      createUnityInstance(canvas, config, progress => {
+        label.textContent = (progress * 100).toFixed() + "%";
+      }).then(instance => {
+        window.unityInstance = instance;
+        loadingBar.style.display = "none";
+        fullscreenButton.onclick = () => instance.SetFullscreen(1);
+      }).catch(alert);
+    };
+    document.body.appendChild(script);
+    </script>
+
+    <script>
+        /*
+            // Android PWA 설치 이벤트
+            let deferredPrompt;
+            const installBtn = document.getElementById('install-btn');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+              e.preventDefault();
+              deferredPrompt = e;
+              installBtn.style.display = 'inline-block';
+            });
+
+            installBtn.addEventListener('click', async () => {
+              installBtn.style.display = 'none';
+              deferredPrompt.prompt();
+              const { outcome } = await deferredPrompt.userChoice;
+              console.log('설치 결과:', outcome);
+              deferredPrompt = null;
+            });
+
+            // iOS 안내 메시지
+            const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+            const isStandalone = window.navigator.standalone === true;
+            if (isIOS && !isStandalone) {
+              document.getElementById('ios-install-tip').style.display = 'block';
+            }
+        */
+        // Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker 등록됨:', reg.scope))
+                .catch(err => console.warn('Service Worker 등록 실패:', err));
+        }
+    </script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import {
+            getAuth,
+            signInWithPopup,
+            GoogleAuthProvider,
+            OAuthProvider,
+            signInAnonymously,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyBz-4ISIuqBGnZsvwgGct-v_0ijXd4Tgoc",
+            authDomain: "pk256-442209.firebaseapp.com",
+            projectId: "pk256-442209",
+            storageBucket: "pk256-442209.firebasestorage.app",
+            messagingSenderId: "699163808136",
+            appId: "1:699163808136:web:bdf0562a69aa1b2107ea3d",
+            measurementId: "G-RDPLSXJS3H"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        function unitySend(success, data) {
+            if (success)
+                window.unityInstance.SendMessage("GameMaster", "OnFirebaseWebLoginSuccess", JSON.stringify(data));
+            else
+                window.unityInstance.SendMessage("GameMaster", "OnFirebaseWebLoginError", data);
+        }
+
+        window.firebaseLoginGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const token = await result.user.getIdToken();
+                unitySend(true, {
+                    provider: "google",
+                    uid: result.user.uid,
+                    email: result.user.email || "",
+                    name: result.user.displayName || "",
+                    idToken: token
+                });
+            } catch (err) {
+                unitySend(false, err.message);
+            }
+        };
+
+        window.firebaseLoginApple = async () => {
+            const provider = new OAuthProvider("apple.com");
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const token = await result.user.getIdToken();
+                unitySend(true, {
+                    provider: "apple",
+                    uid: result.user.uid,
+                    email: result.user.email || "",
+                    name: result.user.displayName || "",
+                    idToken: token
+                });
+            } catch (err) {
+                unitySend(false, err.message);
+            }
+        };
+
+        window.firebaseLoginAnonymous = async () => {
+            try {
+                const result = await signInAnonymously(auth);
+                const token = await result.user.getIdToken();
+                unitySend(true, {
+                    provider: "anonymous",
+                    uid: result.user.uid,
+                    idToken: token
+                });
+            } catch (err) {
+                unitySend(false, err.message);
+            }
+        };
+
+        window.firebaseLogout = async () => {
+            try {
+                await signOut(auth);
+                window.unityInstance.SendMessage("GameMaster", "OnFirebaseWebLogoutSuccess", JSON.stringify({ logout: true }));
+            } catch (err) {
+                window.unityInstance.SendMessage("GameMaster", "OnFirebaseWebLogoutError", JSON.stringify({ logout: false }));
+            }
+        };
+
+        window.firebaseGetIdToken = async (forceRefresh = false) => {
+            try {
+                const user = auth.currentUser;
+                if (!user) {
+                    window.unityInstance.SendMessage("GameMaster", "OnFirebaseWebLoginError", "No user is currently logged in");
+                    return;
+                }
+                const token = await user.getIdToken(forceRefresh);
+                window.unityInstance.SendMessage("GameMaster", "OnFirebaseGetIdTokenSuccess", JSON.stringify({ idToken: token }));
+            } catch (err) {
+                window.unityInstance.SendMessage("GameMaster", "OnFirebaseWebLoginError", err.message);
+            }
+        };
+    </script>
+    <script src="https://nice.checkplus.co.kr/CheckPlusSafeModel/sdk.js"></script>
+    <script>
+window.requestNiceAuth = function(tokenVersionId, encData, integrityValue) {
+    NiceAuth.request({
+        token_version_id: tokenVersionId,
+        enc_data: encData,
+        integrity_value: integrityValue,
+        onSuccess: function(result) {
+            gameInstance.SendMessage('NiceAPIManagerWebGL', 'OnNiceAuthSuccess', JSON.stringify(result));
+        },
+        onFailure: function(error) {
+            gameInstance.SendMessage('NiceAPIManagerWebGL', 'OnNiceAuthFailure', error.message);
+        }
+    });
+};
+</script>
+
+</body>
+</html>
