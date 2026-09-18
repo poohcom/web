@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoRent CRM - 장기렌트·리스 영업 관리 시스템</title>
+<style>
+:root { --bg:#0f172a; --panel:#1e293b; --border:#334155; --text:#f8fafc; --muted:#94a3b8; --pri:#3b82f6; --green:#10b981; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+body { background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+header { background:#0b1120; border-bottom:1px solid var(--border); padding:12px 24px; display:flex; justify-content:space-between; align-items:center; }
+.brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:18px; color:#60a5fa; }
+.back-btn { background:#1e293b; color:#94a3b8; padding:6px 12px; border-radius:6px; font-size:12px; text-decoration:none; }
+.back-btn:hover { color:#fff; }
+.nav-tabs { display:flex; gap:8px; }
+.nav-btn { background:#1e293b; border:1px solid var(--border); color:#94a3b8; padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; }
+.nav-btn.active { background:var(--pri); color:#fff; border-color:var(--pri); }
+main { padding:20px 24px; flex:1; max-width:1600px; margin:0 auto; width:100%; display:flex; flex-direction:column; gap:20px; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.stat-card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:16px; }
+.stat-card small { color:var(--muted); font-size:12px; }
+.stat-card h3 { font-size:24px; margin-top:4px; font-weight:800; }
+.kanban-board { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; min-height:550px; }
+.kanban-col { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; display:flex; flex-direction:column; gap:12px; }
+.col-header { display:flex; justify-content:space-between; font-weight:700; font-size:14px; border-bottom:1px solid var(--border); padding-bottom:8px; }
+.lead-card { background:#0f172a; border:1px solid var(--border); border-radius:8px; padding:12px; cursor:pointer; transition:transform 0.15s; }
+.lead-card:hover { transform:translateY(-2px); border-color:var(--pri); }
+.lead-title { font-weight:700; font-size:14px; margin-bottom:4px; display:flex; justify-content:space-between; }
+.lead-meta { font-size:12px; color:var(--muted); margin-bottom:6px; }
+.lead-badge { display:inline-block; font-size:10px; font-weight:bold; padding:2px 6px; border-radius:4px; background:#1e3a8a; color:#93c5fd; }
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99; align-items:center; justify-content:center; }
+.modal.active { display:flex; }
+.modal-box { background:#1e293b; border:1px solid #475569; width:480px; border-radius:12px; padding:24px; }
+.form-input { width:100%; background:#0f172a; border:1px solid var(--border); padding:10px; border-radius:6px; color:#fff; margin-bottom:12px; font-size:13px; }
+.btn-pri { background:var(--pri); border:none; color:#fff; padding:10px 18px; border-radius:6px; font-weight:600; cursor:pointer; font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+    <div class="brand">
+        <a href="../index.html" class="back-btn">&larr; 포털 전체 목록</a>
+        <span>⚡ AutoRent Sales CRM</span>
+    </div>
+    <div class="nav-tabs">
+        <button class="nav-btn active" onclick="showTab('kanban')">파이프라인 칸반</button>
+        <button class="nav-btn" onclick="showTab('rules')">광고 DB 자동 배분</button>
+        <button class="nav-btn" onclick="showTab('stats')">영업 실적 통계</button>
+    </div>
+    <div>
+        <button class="btn-pri" onclick="openNewLeadModal()">+ 신규 DB 등록</button>
+    </div>
+</header>
+<main>
+    <div class="stats">
+        <div class="stat-card"><small>오늘 신규 인입 DB</small><h3 id="statToday">28건</h3><span style="color:#10b981;font-size:12px;">▲ 12% 증가</span></div>
+        <div class="stat-card"><small>진행 중 상담 건수</small><h3>64건</h3><span style="color:#38bdf8;font-size:12px;">평균 응대 8분</span></div>
+        <div class="stat-card"><small>이번 달 계약 완료</small><h3>42건</h3><span style="color:#10b981;font-size:12px;">계약률 32.8%</span></div>
+        <div class="stat-card"><small>예상 정산 수수료</small><h3>₩38,400,000</h3><span style="color:#f59e0b;font-size:12px;">전월 대비 114%</span></div>
+    </div>
+
+    <div id="tabKanban" class="kanban-board">
+        <div class="kanban-col" id="colNew">
+            <div class="col-header"><span>신규 인입 (New)</span><span id="cntNew">3</span></div>
+            <div class="lead-card" onclick="advanceLead(this, 'colConsult')">
+                <div class="lead-title"><span>김동현 (010-84**-1234)</span><span class="lead-badge">네이버SA</span></div>
+                <div class="lead-meta">제네시스 G80 가솔린 2.5T / 48개월</div>
+                <small style="color:#64748b;">배정: 이호진 팀장 &bull; 10분 전</small>
+            </div>
+            <div class="lead-card" onclick="advanceLead(this, 'colConsult')">
+                <div class="lead-title"><span>박서준 (010-33**-9876)</span><span class="lead-badge">메타 광고</span></div>
+                <div class="lead-meta">쏘렌토 하이브리드 노블레스 / 60개월</div>
+                <small style="color:#64748b;">배정: 정민우 선임 &bull; 25분 전</small>
+            </div>
+        </div>
+        <div class="kanban-col" id="colConsult">
+            <div class="col-header"><span>상담 중 (Consulting)</span><span>3</span></div>
+            <div class="lead-card" onclick="advanceLead(this, 'colCredit')">
+                <div class="lead-title"><span>최지훈 (010-91**-4455)</span><span class="lead-badge">구글 검색</span></div>
+                <div class="lead-meta">BMW 520i M Sport / 보증금 20%</div>
+                <small style="color:#64748b;">배정: 강수민 주임 &bull; 1차 견적 발송</small>
+            </div>
+            <div class="lead-card" onclick="advanceLead(this, 'colCredit')">
+                <div class="lead-title"><span>정우성 (010-52**-7711)</span><span class="lead-badge">유튜브</span></div>
+                <div class="lead-meta">카니발 9인승 디젤 시그니처 / 무보증</div>
+                <small style="color:#64748b;">배정: 이호진 팀장 &bull; 재통화 예정</small>
+            </div>
+        </div>
+        <div class="kanban-col" id="colCredit">
+            <div class="col-header"><span>심사 요청 (Underwriting)</span><span>2</span></div>
+            <div class="lead-card" onclick="advanceLead(this, 'colWon')">
+                <div class="lead-title"><span>(주)한양솔루션 법인</span><span class="lead-badge">법인문의</span></div>
+                <div class="lead-meta">그랜저 하이브리드 3대 패키지</div>
+                <small style="color:#64748b;">현대캐피탈 / DGB 심사 진행 중</small>
+            </div>
+        </div>
+        <div class="kanban-col" id="colWon">
+            <div class="col-header"><span>계약 체결 (Won)</span><span>2</span></div>
+            <div class="lead-card">
+                <div class="lead-title"><span>이민혁 (010-41**-6622)</span><span class="lead-badge" style="background:#065f46;color:#6ee7b7;">승인완료</span></div>
+                <div class="lead-meta">아반떼 N라인 / 출고 대기 (수수료 95만원)</div>
+                <small style="color:#64748b;">전자약정 완료 &bull; 탁송 준비</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="tabRules" style="display:none;" class="stat-card">
+        <h3 style="margin-bottom:16px;">광고 매체별 실시간 DB 자동 배분 (라운드로빈 엔진)</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+            <thead><tr style="border-bottom:1px solid #334155;color:#94a3b8;"><th style="padding:10px;text-align:left;">상담원</th><th style="padding:10px;text-align:left;">직급</th><th style="padding:10px;text-align:left;">배분 가중치</th><th style="padding:10px;text-align:left;">현재 배분수</th><th style="padding:10px;text-align:left;">전환 성공률</th><th style="padding:10px;text-align:left;">가동 상태</th></tr></thead>
+            <tbody>
+                <tr style="border-bottom:1px solid #1e293b;">
+                    <td style="padding:12px;">이호진</td><td>팀장</td>
+                    <td><input type="range" min="1" max="10" value="8" style="width:100px;"> <strong>80%</strong></td>
+                    <td>14건</td><td>38.2%</td><td><span style="color:#10b981;">● 정상 수신 중</span></td>
+                </tr>
+                <tr style="border-bottom:1px solid #1e293b;">
+                    <td style="padding:12px;">정민우</td><td>선임</td>
+                    <td><input type="range" min="1" max="10" value="6" style="width:100px;"> <strong>60%</strong></td>
+                    <td>10건</td><td>31.5%</td><td><span style="color:#10b981;">● 정상 수신 중</span></td>
+                </tr>
+                <tr style="border-bottom:1px solid #1e293b;">
+                    <td style="padding:12px;">강수민</td><td>주임</td>
+                    <td><input type="range" min="1" max="10" value="5" style="width:100px;"> <strong>50%</strong></td>
+                    <td>8건</td><td>27.0%</td><td><span style="color:#10b981;">● 정상 수신 중</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn-pri" style="margin-top:16px;" onclick="alert('배분 룰셋이 실시간 반영되었습니다.')">설정 저장</button>
+    </div>
+
+    <div id="tabStats" style="display:none;" class="stat-card">
+        <h3 style="margin-bottom:12px;">월별 영업 수수료 & 계약 집계</h3>
+        <p style="color:#94a3b8;font-size:13px;margin-bottom:16px;">장기렌트 및 리스 금융사별 정산 승인 집계 현황입니다.</p>
+        <div style="background:#0f172a;padding:16px;border-radius:8px;border:1px solid #334155;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>KB캐피탈 승인 총액: <strong>₩14,200,000</strong></span><span>우리카드 오토금융: <strong>₩11,500,000</strong></span><span>하나캐피탈: <strong>₩12,700,000</strong></span></div>
+            <div style="height:12px;background:#1e293b;border-radius:6px;overflow:hidden;display:flex;">
+                <div style="width:37%;background:#3b82f6;"></div>
+                <div style="width:30%;background:#10b981;"></div>
+                <div style="width:33%;background:#f59e0b;"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal" id="leadModal">
+    <div class="modal-box">
+        <h3 style="margin-bottom:14px;">신규 고객 DB 인입 등록</h3>
+        <input type="text" id="mName" class="form-input" placeholder="고객명 (예: 홍길동)">
+        <input type="text" id="mPhone" class="form-input" placeholder="연락처 (예: 010-1234-5678)">
+        <input type="text" id="mCar" class="form-input" placeholder="관심 차종 (예: 카니발 하이브리드 9인승)">
+        <select id="mSrc" class="form-input">
+            <option>네이버 검색광고</option>
+            <option>인스타그램 스폰서</option>
+            <option>유튜브 리뷰 제휴</option>
+        </select>
+        <div style="display:flex;justify-content:flex-end;gap:8px;">
+            <button class="btn-pri" style="background:#475569;" onclick="closeModal()">취소</button>
+            <button class="btn-pri" onclick="addLead()">등록 및 자동 배분</button>
+        </div>
+    </div>
+</div>
+
+<script>
+function showTab(t) {
+    document.getElementById('tabKanban').style.display = t === 'kanban' ? 'grid' : 'none';
+    document.getElementById('tabRules').style.display = t === 'rules' ? 'block' : 'none';
+    document.getElementById('tabStats').style.display = t === 'stats' ? 'block' : 'none';
+    const btns = document.querySelectorAll('.nav-btn');
+    btns[0].classList.toggle('active', t === 'kanban');
+    btns[1].classList.toggle('active', t === 'rules');
+    btns[2].classList.toggle('active', t === 'stats');
+}
+function advanceLead(card, nextColId) {
+    document.getElementById(nextColId).appendChild(card);
+}
+function openNewLeadModal() {
+    document.getElementById('leadModal').classList.add('active');
+}
+function closeModal() {
+    document.getElementById('leadModal').classList.remove('active');
+}
+function addLead() {
+    const name = document.getElementById('mName').value || '신규 고객';
+    const phone = document.getElementById('mPhone').value || '010-0000-0000';
+    const car = document.getElementById('mCar').value || '차종 미정';
+    const src = document.getElementById('mSrc').value;
+    
+    const card = document.createElement('div');
+    card.className = 'lead-card';
+    card.onclick = function() { advanceLead(card, 'colConsult'); };
+    card.innerHTML = `<div class="lead-title"><span>${name} (${phone})</span><span class="lead-badge">${src}</span></div><div class="lead-meta">${car}</div><small style="color:#64748b;">배정: 자동 분배 알고리즘 &bull; 방금 전</small>`;
+    document.getElementById('colNew').appendChild(card);
+    
+    closeModal();
+    const cur = parseInt(document.getElementById('statToday').innerText);
+    document.getElementById('statToday').innerText = (cur + 1) + '건';
+}
+</script>
+</body>
+</html>

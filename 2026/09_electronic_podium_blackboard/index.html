@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>09. 전자교탁·전자칠판 판매용 홈페이지 신규 제작 - 인터랙티브 웹 데모</title>
+<style>
+:root { --bg:#0b0f19; --panel:#131d31; --border:#1e293b; --pri:#F97316; --text:#f8fafc; --muted:#94a3b8; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+body { background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+header { background:#0f172a; border-bottom:1px solid var(--border); padding:14px 24px; display:flex; justify-content:space-between; align-items:center; }
+.brand { display:flex; align-items:center; gap:12px; font-weight:800; font-size:16px; color:#fff; }
+.back-btn { background:#1e293b; color:#94a3b8; padding:6px 14px; border-radius:6px; font-size:12px; text-decoration:none; }
+.back-btn:hover { color:#fff; }
+main { padding:24px; flex:1; max-width:1400px; margin:0 auto; width:100%; display:flex; flex-direction:column; gap:20px; }
+.hero-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; display:flex; justify-content:space-between; align-items:center; }
+.badge { background:#F9731622; color:#F97316; border:1px solid #F9731644; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:bold; }
+.grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:18px; }
+.card-header { font-size:14px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; }
+.card-val { font-size:24px; font-weight:800; color:#fff; }
+.workspace { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:24px; display:flex; flex-direction:column; gap:16px; min-height:480px; }
+.console-box { background:#070b14; border:1px solid var(--border); border-radius:8px; padding:16px; font-family:monospace; font-size:13px; color:#38bdf8; min-height:160px; overflow-y:auto; }
+.btn-run { background:#F97316; border:none; color:#fff; padding:12px 24px; border-radius:8px; font-weight:700; font-size:14px; cursor:pointer; transition:filter 0.2s; }
+.btn-run:hover { filter:brightness(1.1); }
+.input-text { background:#070b14; border:1px solid var(--border); padding:10px 14px; border-radius:6px; color:#fff; font-size:13px; width:100%; }
+</style>
+</head>
+<body>
+<header>
+    <div class="brand">
+        <a href="../index.html" class="back-btn">&larr; 포털 전체 목록</a>
+        <span class="badge">에듀테크 / 하드웨어 쇼룸</span>
+        <span>09. 전자교탁·전자칠판 판매용 홈페이지 신규 제작</span>
+    </div>
+    <div>
+        <span style="font-size:12px;color:#10b981;font-weight:600;">● SYSTEM ONLINE (DEMO MODE)</span>
+    </div>
+</header>
+<main>
+    <div class="hero-card">
+        <div>
+            <h2 style="font-size:20px;margin-bottom:6px;">전자교탁·전자칠판 판매용 홈페이지 신규 제작</h2>
+            <p style="color:var(--muted);font-size:13px;">전자교탁·전자칠판·LED스크린 교육기자재 B2B 판매 반응형 웹</p>
+        </div>
+        <div>
+            <button class="btn-run" onclick="executeCoreEngine()">⚡ 핵심 기능 동작 테스트</button>
+        </div>
+    </div>
+
+    <div class="grid-3">
+        <div class="card">
+            <div class="card-header"><span>데이터 처리량</span><span>Realtime</span></div>
+            <div class="card-val" id="valProc">1,842건</div>
+            <div style="font-size:11px;color:#10b981;margin-top:4px;">▲ 초당 42개 트랜잭션 동기화</div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>알고리즘 정확도 / 신뢰 지표</span><span>SLA 99%</span></div>
+            <div class="card-val" style="color:#10b981;">99.4%</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">오차 허용 범위 0.05% 이내</div>
+        </div>
+        <div class="card">
+            <div class="card-header"><span>응답 지연 시간</span><span>Latency</span></div>
+            <div class="card-val" style="color:#38bdf8;" id="valLatency">14 ms</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">인메모리 고속 캐싱 적용</div>
+        </div>
+    </div>
+
+    <div class="workspace">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h3>🖥️ 실시간 인터랙티브 시뮬레이터</h3>
+            <span style="font-size:12px;color:var(--muted);">조작 컨트롤러를 통해 즉시 기능을 시연할 수 있습니다.</span>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">테스트 파라미터 / 입력 데이터</label>
+                <input type="text" id="demoInput" class="input-text" value="SAMPLE-DATA-NODE-0918">
+            </div>
+            <div>
+                <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">실행 강도 및 처리 옵션</label>
+                <select class="input-text" id="demoMode">
+                    <option>표준 정밀 처리 모드 (Standard)</option>
+                    <option>고속 배치 동기화 모드 (High Speed)</option>
+                    <option>보안 무결성 검증 모드 (Audit Safe)</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-top:10px;">
+            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">실행 콘솔 출력 로그 (Live Engine Output)</label>
+            <div class="console-box" id="consoleLog">
+[2026-09-18 14:25:00] 엔진 초기화 완료. 준비 상태.
+[2026-09-18 14:25:01] 에듀테크 / 하드웨어 쇼룸 모듈 로드 완료. (버전 2.6-stable)
+[2026-09-18 14:25:02] 실시간 연결 대기 중...
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+let count = 1842;
+function executeCoreEngine() {
+    count += 12;
+    document.getElementById('valProc').innerText = count.toLocaleString() + '건';
+    const lat = (10 + Math.random() * 8).toFixed(1);
+    document.getElementById('valLatency').innerText = lat + ' ms';
+    
+    const input = document.getElementById('demoInput').value;
+    const mode = document.getElementById('demoMode').value;
+    const consoleBox = document.getElementById('consoleLog');
+    
+    const time = new Date().toLocaleTimeString();
+    const logLine = `[${time}] 요청 접수: "${input}" | 모드: ${mode}\n[${time}] 파이프라인 연산 완료 -> 결과 상태: 200 OK (처리 소요 ${lat}ms)\n-----------------------------------------------------`;
+    consoleBox.innerText = logLine + '\n' + consoleBox.innerText;
+}
+</script>
+</body>
+</html>

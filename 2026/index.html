@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 위시켓 프로젝트 포털 & 데모 갤러리 (29건)</title>
+<style>
+:root {
+    --bg: #070b14;
+    --card: #0f172a;
+    --card-border: #1e293b;
+    --card-hover: #172554;
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #3b82f6;
+    --accent: #6366f1;
+}
+* { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+a { color: inherit; text-decoration: none; }
+
+/* Hero Section */
+.hero {
+    background: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #070b14 70%);
+    border-bottom: 1px solid var(--card-border);
+    padding: 60px 24px 40px;
+    text-align: center;
+}
+.hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    color: #60a5fa;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+.hero h1 {
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+}
+.hero p {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 760px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+}
+
+/* Quick Stats Bar */
+.stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+.stat-pill {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--card-border);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+.stat-pill strong {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+/* Controls Bar */
+.controls-wrap {
+    max-width: 1400px;
+    margin: -24px auto 30px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 10;
+}
+.controls-bar {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    flex-wrap: wrap;
+}
+.search-box {
+    flex: 1;
+    min-width: 260px;
+    position: relative;
+}
+.search-input {
+    width: 100%;
+    background: #070b14;
+    border: 1px solid #334155;
+    padding: 12px 16px 12px 40px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+}
+.search-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+}
+.filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.filter-btn {
+    background: #070b14;
+    border: 1px solid #334155;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.filter-btn:hover {
+    color: #fff;
+    border-color: #64748b;
+}
+.filter-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+/* Project Grid */
+.grid-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+}
+.card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-4px);
+    border-color: #3b82f6;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.card-thumb {
+    height: 190px;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+.card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+.card:hover .card-thumb img {{
+    transform: scale(1.05);
+}}
+.thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(15,23,42,0.9) 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 14px;
+}
+.thumb-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+}
+.card-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.card-meta-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.card-category {
+    font-size: 12px;
+    font-weight: 700;
+    color: #60a5fa;
+}
+.ai-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+.ai-상 { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+.ai-중 { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.ai-하 { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+.card-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #f8fafc;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    height: 44px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.card-summary {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.info-grid {
+    background: #070b14;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 12px;
+}
+.info-row span { color: var(--text-muted); margin-right: 4px; }
+.info-row strong { color: #fff; }
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+.btn-demo {
+    flex: 1;
+    background: #2563eb;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.btn-demo:hover {
+    background: #1d4ed8;
+}
+.btn-preview {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-preview:hover {
+    background: #334155;
+    color: #fff;
+}
+
+/* Screenshot Modal */
+.modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999; backdrop-filter:blur(5px); justify-content:center; align-items:center; }
+.modal-overlay.active { display:flex; }
+.modal-box { background:#0f172a; border:1px solid #334155; border-radius:16px; width:92%; max-width:1100px; max-height:90vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 25px 50px -12px rgba(0,0,0,0.9); }
+.modal-header { padding:16px 24px; border-bottom:1px solid #1e293b; display:flex; justify-content:space-between; align-items:center; }
+.modal-header h3 { font-size:18px; font-weight:700; color:#fff; }
+.modal-close { background:none; border:none; color:#94a3b8; font-size:24px; cursor:pointer; }
+.modal-body { padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:16px; }
+.screen-nav { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; }
+.screen-nav-btn { background:#1e293b; border:1px solid #334155; color:#94a3b8; padding:8px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
+.screen-nav-btn.active { background:#3b82f6; color:#fff; border-color:#3b82f6; }
+.screen-preview-box { border-radius:8px; overflow:hidden; border:1px solid #334155; background:#000; position:relative; min-height:500px; display:flex; align-items:center; justify-content:center; }
+.screen-preview-img { width:100%; height:auto; display:block; }
+.screen-info { background:#1e293b; padding:14px 18px; border-radius:8px; }
+.screen-info h4 { font-size:15px; color:#fff; margin-bottom:4px; }
+.screen-info p { font-size:13px; color:#94a3b8; }
+</style>
+</head>
+<body>
+
+<section class="hero">
+    <div class="hero-badge">2026-09-18 (금) 위시켓 프로젝트 분석 컬렉션</div>
+    <h1>2026 위시켓 프로젝트 웹 데모 & 스크린샷 허브</h1>
+    <p>노션에 수록된 29개 전체 외주 개발 과제의 요건을 충실히 구현한 인터랙티브 웹 데모 및 유사 프로젝트 벤치마크 스크린샷 5종(총 145장)을 제공합니다.</p>
+    
+    <div class="stats-bar">
+        <div class="stat-pill"><strong>29</strong> 전체 프로젝트</div>
+        <div class="stat-pill"><strong>18</strong> AI 코딩 적합도 [상]</div>
+        <div class="stat-pill"><strong>145</strong> 벤치마크 스크린샷</div>
+        <div class="stat-pill"><strong>100%</strong> 동작 데모 완비</div>
+    </div>
+</section>
+
+<div class="controls-wrap">
+    <div class="controls-bar">
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="프로젝트명, 기술 스택, 카테고리 검색..." oninput="filterProjects()">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="setFilter('all', this)">전체 (29)</button>
+            <button class="filter-btn" onclick="setFilter('AI:상', this)">AI 적합도 [상]</button>
+            <button class="filter-btn" onclick="setFilter('AI:중', this)">AI 적합도 [중]</button>
+            <button class="filter-btn" onclick="setFilter('AI:하', this)">AI 적합도 [하]</button>
+            <button class="filter-btn" onclick="setFilter('3D/AI', this)">3D & AI</button>
+            <button class="filter-btn" onclick="setFilter('웹/SaaS', this)">웹 & SaaS</button>
+        </div>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div class="project-grid" id="projectGrid"></div>
+</div>
+
+<div class="modal-overlay" id="screenshotModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="modalProjectTitle">유사 프로젝트 벤치마크 데모 스크린샷</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="screen-nav" id="screenNav"></div>
+            <div class="screen-preview-box">
+                <img id="previewImg" class="screen-preview-img" src="" alt="Benchmark Screenshot">
+            </div>
+            <div class="screen-info">
+                <h4 id="screenTitle"></h4>
+                <p id="screenDesc"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+var PROJECTS = [{"num": "01", "folder": "01_sales_crm", "title": "영업 CRM 개발 및 데이터 분석", "category": "CRM / 영업 관리", "tagline": "장기렌트·리스 광고 DB 배분 및 영업 통계 CRM", "color": "#3B82F6", "budget": "예상 금액 15,000,000원", "period": "예상 기간 60일", "deadline": "모집 마감 2026-09-18 (16시간 남음)", "tech": "명시 없음", "ai_suit": "상", "summary": "장기렌트·리스 중개 영업의 광고 DB 배분과 담당자 이력·통계를 관리하는 사내 CRM 신규 구축.", "screens": [["영업 파이프라인 칸반 보드", "신규 인입, 가망 고객, 상담 중, 심사 요청, 계약 완료 파이프라인 실시간 드래그 관리"], ["광고 DB 자동 배분 및 라운드로빈 설정", "매체별(네이버/메타/구글) 인입 DB 담당자별 비율 및 순차 자동 배정"], ["상담원별 실적 & 통화 데이터 분석", "일/주/월별 콜 타임, 계약 성공률, 인당 매출 랭킹 및 KPI 추이 차트"], ["고객 상세 프로필 및 상담 타임라인", "고객 기본 정보, 상담 이력 타임라인, 견적서 발송 내역 및 녹취 요약"], ["출고 승인 및 수수료 정산 대시보드", "차량 출고 검수, 금융사 수수료 승인 현황 및 월별 정산 내역서"]]}, {"num": "02", "folder": "02_gym_platform", "title": "체육시설 통합 관리 플랫폼 기능 추가 개발 및 최적화", "category": "스포츠 / 시설 운영", "tagline": "헬스·스크린골프·수영 다종목 체육시설 통합 운영 플랫폼", "color": "#10B981", "budget": "예상 금액 12,000,000원", "period": "예상 기간 90일", "deadline": "모집 마감 2026-09-18 (16시간 남음)", "tech": "명시 없음(기존 C/Java 레거시 시스템 포함 추정)", "ai_suit": "중", "summary": "헬스클럽 중심 통합 운영 플랫폼을 스크린골프장·수영장 등 업종별로 맞춤 기능 확장.", "screens": [["전 지점 통합 타석 & 레인 실시간 현황도", "스크린골프 타석 가동률, 수영 레인 배정, 헬스장 혼잡도 실시간 모니터링"], ["스마트 락커 & 키오스크 무인 발권 연동", "전자 락커 실시간 점유 상태, 무인 키오스크 회원권 바코드 발권 관리"], ["강사 레슨 일정 & PT 회원 예약 캘린더", "골프 프로/수영 강사/트레이너별 레슨 스케줄 및 회원 모바일 예약 현황"], ["회원권·패키지 매출 결제 및 환불 통계", "GX/PT/일반회원권 판매 추이, 프로모션 할인율 및 환불 처리 대시보드"], ["모바일 회원 앱 화면 (입장 바코드 및 예약)", "QR 출입증, 잔여 횟수 조회, 실시간 타석 예약 및 강사 피드백"]]}, {"num": "03", "folder": "03_hospital_homepage", "title": "병원 홈페이지 자체 구축 (SEO/GEO 포함)", "category": "의료 / 병원 웹", "tagline": "그누보드 기반 의료진 소개 및 SEO/GEO 최적화 병원 포털", "color": "#06B6D4", "budget": "예상 금액 10,000,000원", "period": "예상 기간 60일", "deadline": "모집 마감 2026-09-20 (2일 16시간 남음)", "tech": "PHP(그누보드)", "ai_suit": "상", "summary": "기존 병원 홈페이지를 그누보드 기반으로 전면 개편해 SEO·생성형 AI 검색(GEO) 최적화까지 적용.", "screens": [["병원 메인 홈 및 진료과목 인터랙티브 네비게이션", "안과/정형외과/내과 등 진료과목 카드, 최신 의료장비 소개, 예약 바로가기"], ["의료진 프로필 및 진료 스케줄 안내", "원장 이력, 학회 발표 논문, 요일별 진료/수술 시간표 안내"], ["간편 온라인 진료 예약 & 카카오 알림톡 신청", "날짜/시간/진료의 선택 간편 예약 폼 및 본인인증 시스템"], ["의료 정보 블로그 및 건강 칼럼 (SEO 최적화)", "구조화 데이터(Schema.org) 마크업 적용 건강 칼럼 및 FAQ 아카이브"], ["GEO & AI 검색 최적화 진단 콘솔", "Google/Perplexity/ChatGPT 인덱싱 상태, 검색 키워드 랭킹 모니터링"]]}, {"num": "04", "folder": "04_indoor_3d_pipeline", "title": "스마트폰 ARKit·ARCore 기반 실내 3D 재구성 및 1차 평면도 생성 파이프라인 개발", "category": "3D 컴퓨터비전 / AR", "tagline": "ARKit·ARCore 기반 실내 3D 점군 재구성 및 1차 평면도 파이프라인", "color": "#8B5CF6", "budget": "예상 금액 18,000,000원", "period": "예상 기간 45일", "deadline": "모집 마감 2026-09-20 (2일 16시간 남음)", "tech": "명시 없음(ARKit/ARCore)", "ai_suit": "하", "summary": "스마트폰 촬영 데이터로 실내 3D geometry를 재구성해 1차 평면도를 자동 생성하는 서버 알고리즘 파이프라인 개발.", "screens": [["스마트폰 센서 스트림 및 실시간 Point Cloud 수집", "LiDAR 깊이 센서와 카메라 트래킹을 통한 공간 점군 데이터 클라우드 시각화"], ["벽체 세그멘테이션 및 노이즈 필터링 엔진", "가구/창문/바닥 분리, 벽면 평면 피팅(RANSAC) 알고리즘 처리 뷰어"], ["1차 2D 폴리곤 평면도 자동 추출기", "3D 벽면 투영 기반 2D 공간 구획선 및 문/창 개구부 벡터 라인 추출"], ["오차 정합(ICP) 및 멀티프레임 루프 클로징", "다각도 촬영 프레임 간 정합 오차 최소화 및 공간 누적 왜곡 보정"], ["파이프라인 실행 상태 & 벤치마크 처리 로그", "프레임당 처리 속도(FPS), 메모리 사용량, 3D 메쉬 정합률 모니터링"]]}, {"num": "05", "folder": "05_cad_3d_web_viewer", "title": "스마트폰 실내 공간 데이터 기반 평면도 보정·3D CAD 생성 및 모바일 웹 뷰어 개발", "category": "CAD / 3D 웹 뷰어", "tagline": "실내 공간 데이터 평면도 보정·3D CAD 생성 및 Three.js 뷰어", "color": "#EC4899", "budget": "예상 금액 12,000,000원", "period": "예상 기간 45일", "deadline": "모집 마감 2026-09-20 (2일 16시간 남음)", "tech": "명시 없음", "ai_suit": "하", "summary": "1차 과업의 실내 wall graph를 보정·폐합해 3D CAD 모델과 모바일 웹 뷰어를 만드는 2차 파이프라인 개발.", "screens": [["Three.js 기반 인터랙티브 실내 3D CAD 뷰어", "360도 회전, 올빗 컨트롤, 벽체 투명도 조절, 조명/그림자 렌더링"], ["벽체 자동 스냅 & 직각 보정 2D 편집기", "비뚤어진 벽체 각도를 90도 직교 스냅 보정하는 벡터 도면 툴"], ["치수 측정 및 면적 자동 계산 모드", "벽과 벽 사이 거리 측정(m), 방별 전용면적/공용면적 평방미터 산출"], ["모바일 최적화 웹 뷰어 (터치 제스처 지원)", "스마트폰 브라우저에서 핀치 줌, 가상 투어(First Person) 워크스루"], ["CAD(DXF/IFC/OBJ) 내보내기 및 렌더링 설정", "건축 표준 포맷 내보내기, 재질 텍스처(우드/대리석/콘크리트) 교체"]]}, {"num": "06", "folder": "06_ai_running_ml_pipeline", "title": "완성된 AI 러닝분석 엔진의 재학습 자동화 시스템 구축(ML 경험 필수)", "category": "AI / MLOps / 헬스케어", "tagline": "러닝 자세분석 AI 엔진 자동 재학습 파이프라인 (FastAPI/PyTorch)", "color": "#F59E0B", "budget": "예상 금액 17,000,000원", "period": "예상 기간 120일", "deadline": "모집 마감 2026-09-21 (3일 16시간 남음)", "tech": "fastapi, Python, PyTorch", "ai_suit": "중", "summary": "완성된 러닝 자세분석 AI 엔진이 진료 데이터로 스스로 재학습하는 자동화 시스템 구축.", "screens": [["러닝 모션 키포인트 트래킹 & 관절 각도 분석", "무릎 각도, 착지각, 케이던스, 좌우 비대칭 점수 실시간 스켈레톤 추출"], ["재학습 파이프라인 MLOps 오케스트레이션 대시보드", "데이터셋 수집 → 어노테이션 검증 → 분산 학습 트리거 DAG 파이프라인"], ["모델 성능 검증 (Loss/mAP) 및 이전 버전 비교", "버전별 정확도 지표, 혼동 행렬, A/B 테스트 추론 비교 차트"], ["신규 임상 라벨링 데이터셋 큐레이션 도구", "의료진/코치 검증 완료 진료 영상 선별, 이상치 필터링 및 레이블링 뷰어"], ["FastAPI 추론 서버 모니터링 & 자동 배포", "API 엔드포인트 Latency, GPU 메모리 점유율, Canary 배포 제어판"]]}, {"num": "07", "folder": "07_space_rental_booking", "title": "공간대여 예약 홈페이지 리뉴얼", "category": "예약 / 결제 / O2O", "tagline": "7개 지점 음악·댄스 연습실 시간제 공간대여 반응형 예약 플랫폼", "color": "#6366F1", "budget": "예상 금액 10,000,000원", "period": "예상 기간 90일", "deadline": "모집 마감 2026-09-21 (3일 16시간 남음)", "tech": "ADOBE XD, AWS, express.js, Figma, MySQL, Node.js, React, Rest api, stripe", "ai_suit": "상", "summary": "7개 지점 연습실 시간대관 예약 사이트를 반응형 단일 소스로 재구축, 예약·회원 데이터 이관 포함.", "screens": [["지점별 룸 선택 및 인터랙티브 타임슬롯 예약표", "강남/홍대/신촌 7개 지점, 룸 크기별 시간대별 실시간 예약 가능 슬롯"], ["원스톱 간편 결제 & 쿠폰/적립금 적용 팝업", "PG 카드결제, 카카오페이/토스페이, 정기 대관 할인 적용"], ["스마트 도어락 비밀번호 자동 발급 시스템", "결제 즉시 고객 SMS/카톡으로 입실 10분 전 비밀번호 연동 발급"], ["관리자 실시간 룸 현황 및 청소/점검 스케줄", "입퇴실 실시간 타임라인, 냉난방 원격 제어, 청소 상태 체크리스트"], ["월별 대관 매출 분석 및 피크 타임 통계", "지점별 가동률, 요일별/시간대별 예약 집중도, 취소율 분석"]]}, {"num": "08", "folder": "08_bag_parts_showroom", "title": "가방 부품 디지털 쇼룸 웹사이트 구축", "category": "이커머스 / 디지털 쇼룸", "tagline": "가방용 플라스틱 부품 부위 클릭 탐색 3D 디지털 쇼룸 (WordPress)", "color": "#14B8A6", "budget": "예상 금액 5,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-21 (3일 16시간 남음)", "tech": "WordPress", "ai_suit": "상", "summary": "가방용 플라스틱 부품을 부위 클릭으로 탐색하는 디지털 쇼룸 워드프레스 사이트 구축.", "screens": [["가방 부위별 핫스팟 인터랙티브 부품 탐색기", "백팩 3D 렌더링 모델의 버클/지퍼/스트랩 클릭 시 부품 정보 팝업"], ["부품 카테고리별 스펙 필터 & 그리드 카탈로그", "인장강도, 규격(20mm/25mm/38mm), 친환경 재생 플라스틱 필터"], ["부품 상세 페이지 (360도 회전 뷰 & 인장강도 시험서)", "고화질 360도 뷰어, 결합 단면도 CAD, 시험성적서 PDF 다운로드"], ["B2B 샘플 신청 바구니 & 견적 요청서", "기업 고객 대량 발주 샘플 신청, 수량별 단가표 및 견적서 생성"], ["쇼룸 관리자 CMS 및 제품 3D 매핑 관리", "부품 모델 업로드, 가방 모델 위 핫스팟 좌표 지정 및 재고 관리"]]}, {"num": "09", "folder": "09_electronic_podium_blackboard", "title": "전자교탁·전자칠판 판매용 홈페이지 신규 제작", "category": "에듀테크 / 하드웨어 쇼룸", "tagline": "전자교탁·전자칠판·LED스크린 교육기자재 B2B 판매 반응형 웹", "color": "#F97316", "budget": "예상 금액 1,200,000원", "period": "예상 기간 10일", "deadline": "모집 마감 2026-09-21 (3일 16시간 남음)", "tech": "명시 없음", "ai_suit": "상", "summary": "전자교탁·전자칠판·LED스크린 등 교육기자재 판매용 반응형 홈페이지 신규 제작.", "screens": [["스마트 교실 솔루션 메인 비주얼 & 제품 라인업", "86인치 전자칠판, 전동 전자교탁, 조달청 등록 우수제품 하이라이트"], ["전자칠판 인터랙티브 기능 시뮬레이터 (터치/판서/미러링)", "화면 필기, 무선 화면 공유, 4K 분할 뷰 기능 가상 체험 모듈"], ["학교/관공서/기업 납품 실적 갤러리", "전국 대학교, 초중고 스마트교실 실제 구축 사진 및 고객 후기"], ["조달 번호 조회 및 맞춤형 견적 계산기", "나라장터 물품식별번호 조회, 설치 옵션별 예상 견적서 즉시 산출"], ["A/S 유지보수 접수 및 펌웨어 다운로드 센터", "시리얼 번호 조회를 통한 무상 보증 기간 확인 및 기술 지원 문의"]]}, {"num": "10", "folder": "10_wordpress_db_platform", "title": "워드프레스 기반 DB 웹 플랫폼 구축", "category": "데이터베이스 / 웹 플랫폼", "tagline": "워드프레스 기반 공공/대외 데이터베이스 등록·검색·통계 플랫폼", "color": "#3B82F6", "budget": "예상 금액 7,000,000원", "period": "예상 기간 60일", "deadline": "모집 마감 2026-09-21 (3일 16시간 남음)", "tech": "CSS, HTML, JavaScript, JSON, PHP, WordPress", "ai_suit": "상", "summary": "분산 관리되던 정보를 등록·검색·통계까지 처리하는 워드프레스 기반 대외 공개형 DB 플랫폼 구축.", "screens": [["통합 데이터 검색 엔진 및 다중 패싯 필터", "키워드, 발행연도, 분류 태그, 기관별 실시간 인덱스 필터링"], ["데이터 레코드 상세 보기 & 연관 데이터 네트워크", "메타데이터 상세 스펙, DOI 링크, 인용 통계 및 연관 데이터 그래프"], ["대량 데이터 CSV/Excel 일괄 등록 & 유효성 검사", "관리자/연구원 엑셀 업로드 시 필드 매핑 및 데이터 무결성 검증"], ["인터랙티브 데이터 시각화 차트 대시보드", "연도별 등록 추이, 분야별 비중 도넛 차트, 데이터 다운로드 랭킹"], ["오픈 API 개발자 포털 & API 키 발급", "REST API 엔드포인트 명세, 요청 예제 코드, 트래픽 쿼터 관리"]]}, {"num": "11", "folder": "11_cdss_infection_web", "title": "감염질환 CDSS 웹 MVP 고도화", "category": "의료 AI / CDSS / Next.js", "tagline": "감염질환 임상의사결정지원(CDSS) 웹 MVP (OCR 검사지 추출 & 검증)", "color": "#EF4444", "budget": "예상 금액 7,272,727원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-21 (3일 16시간 남음)", "tech": "명시 없음(Next.js/TypeScript 기반 언급)", "ai_suit": "상", "summary": "운영 중인 감염질환 임상의사결정지원(CDSS) 웹 MVP에 검사지 업로드→AI 데이터 추출→의료진 검증 흐름을 추가.", "screens": [["환자 감염병 스크리닝 대시보드 & 위험도 트리아지", "중증도 지수(qSOFA), 항생제 내성균 감염 의심 환자 실시간 알림"], ["혈액/미생물 배양 검사지 AI OCR 자동 파싱", "스캔 검사지 업로드 시 백혈구, CRP, 동정 균주 자동 추출 및 매핑"], ["의료진 데이터 검증 및 신뢰도 교정 인터페이스", "AI 추출값 vs 원본 이미지 분할 대조, 오인식 수치 즉시 수정"], ["항생제 감수성 결과(AST) 기반 치료 가이드라인 추천", "CLSI 기준 감수성 항생제 추천, 병용 요법 및 신기능별 용량 조절"], ["임상 결정 감사 로그 & 다학제 협진 기록", "처방 변경 이력, 권고 수용/기각 사유 기록 및 감염내과 자문 로그"]]}, {"num": "12", "folder": "12_ai_health_data_mvp", "title": "AI 건강 데이터 조회 웹서비스 MVP 개발", "category": "헬스케어 / AI 리포트", "tagline": "생체 바이오 데이터 AI 분석 결과 시각화 및 맞춤 리포트 MVP", "color": "#0EA5E9", "budget": "예상 금액 2,800,000원", "period": "예상 기간 14일", "deadline": "모집 마감 2026-09-22 (4일 16시간 남음)", "tech": "명시 없음", "ai_suit": "상", "summary": "자체 보유한 건강 데이터 조회 AI 모델의 결과를 시각화해 보여주는 웹서비스 MVP 개발.", "screens": [["종합 건강 스코어 및 5대 건강 지표 방사형 차트", "심혈관, 대사, 수면, 스트레스, 면역 점수 및 연령대비 백분위"], ["웨어러블 심박변이도(HRV) & 수면 단계 시계열 분석", "수면 주기(렘수면/깊은수면), 자율신경계 균형도 그래프"], ["AI 생성 맞춤형 건강 가이드 & 영양제 추천", "개인 맞춤 식단 제안, 부족 영양소 보충제 분석, 일일 운동 미션"], ["건강검진 기록 추이 비교 (3개년 변화)", "혈압, 혈당, 콜레스테롤 수치 연도별 변화 추이 및 경고 신호"], ["PDF 건강 리포트 내보내기 & 의사 상담 공유 모드", "원클릭 의무기록용 요약본 생성, QR 공유 링크 발급"]]}, {"num": "13", "folder": "13_cafe_margin_calculator", "title": "카페 원가·마진 정산 앱 MVP 서버 API 및 Flutter 연동 개발", "category": "F&B 솔루션 / 모바일 앱 연동", "tagline": "카페 레시피별 원가·마진 정산 및 POS 연동 API 대시보드", "color": "#D97706", "budget": "예상 금액 10,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-22 (4일 16시간 남음)", "tech": "Android, Docker, Flutter, iOS, Nestjs, PostgreSQL, prisma", "ai_suit": "상", "summary": "소규모 카페 원가·마진 관리 앱의 서버 API 개발과 기존 앱 화면 서버 연동으로 베타 MVP 완성.", "screens": [["메뉴별 레시피 원가 시뮬레이터 (원두/우유/시럽)", "g/ml 단위 원재료 단가 기반 제조 원가, 부자재(컵/빨대) 포함 마진율"], ["일일 POS 매출 연동 실시간 손익 계산기", "판매 수량 자동 집계, 당일 순이익, 원가율(Cost of Goods) 추이"], ["재료 발주 알림 & 안전 재고 관리", "예상 소진량 분석을 통한 원두/파우더 발주 추천 및 최소 재고 알림"], ["배달앱 수수료 반영 플랫폼별 실수령액 비교", "배민/쿠팡이츠/요기요 수수료, 배달팁 차감 후 실제 마진 분석"], ["Flutter 모바일 앱 화면 (점주용 스마트폰 요약 뷰)", "퇴근 전 오늘 매출, 베스트 메뉴 TOP5, 내일 발주 품목 알림"]]}, {"num": "14", "folder": "14_export_fair_management", "title": "수출상담회 관리 웹 시스템 기능 추가개발", "category": "MICE / 전시회 / B2B", "tagline": "B2B 글로벌 수출상담회 관리 웹 (바이어 매칭 & 통역사 현장 배정)", "color": "#4F46E5", "budget": "예상 금액 15,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-22 (4일 16시간 남음)", "tech": "Laravel, PHP, Vue.js", "ai_suit": "상", "summary": "운영 중인 B2B 수출상담회 관리 웹 시스템에 통역사 출퇴근·호출 등 현장 기능 추가 및 기존 기능 개선.", "screens": [["상담회 타임테이블 & 부스별 매칭 스케줄 매트릭스", "해외 바이어 x 국내 수출기업 30분 단위 매칭 시간표 및 공실 현황"], ["전문 통역사 실시간 현장 배치 및 호출 관제", "영어/중국어/일어 통역사 부스 체크인, 긴급 호출 및 잔여 시간 타이머"], ["수출 계약 추진액 & 현장 상담 일지 집계", "상담 건수, MOU 체결액, 본계약 유력 바이어 등 현장 데이터 집계"], ["바이어/셀러 모바일 전용 상담 일정 알림장", "내 상담 스케줄, 부스 위치 지도, 사전 열람 제품 브로슈어"], ["결과 보고서 및 정부 지원사업 실적 자동 생성", "KOTRA/중기부 서식 맞춤형 최종 수출상담회 결과 통계 리포트"]]}, {"num": "15", "folder": "15_crypto_trading_engine", "title": "비트코인 자동매매 주문 실행 엔진 개발", "category": "핀테크 / 암호화폐 / 봇", "tagline": "OKX·Bitget 연동 비트코인 자동매매 주문 실행 엔진 & 관제 대시보드", "color": "#F59E0B", "budget": "예상 금액 5,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-22 (4일 16시간 남음)", "tech": "Python, Rest api, WebSocket", "ai_suit": "상", "summary": "OKX·Bitget 거래소와 연동해 비트코인 자동매매 주문을 실행하는 Python 엔진과 관리용 대시보드 개발.", "screens": [["실시간 호가창 & 웹소켓 주문 체결 캔들 차트", "TradingView 캔들 차트 연동, 실시간 체결 틱 데이터 및 호가 잔량"], ["전략 봇 실행 콘솔 & 포지션 PnL 실시간 모니터링", "그리드/DCA/변동성 돌파 봇 가동 상태, 미실현 손익, 레버리지"], ["거래소 API 멀티 키 관리 & 계좌 잔고 현황", "OKX, Bitget 선물/스팟 잔고, 증거금 유지율, 주문 대기열"], ["리스크 관리 & 서킷 브레이커 자동 청산 설정", "최대 일일 손실 한도, 트레일링 스탑, 네트워크 핑 지연 시 긴급 정지"], ["백테스팅 엔진 결과 리포트 & 샤프지수 분석", "과거 1년 데이터 시뮬레이션, 최대 낙폭(MDD), 승률 백분위"]]}, {"num": "16", "folder": "16_accounting_auto_input", "title": "희망이음 회계 수기 입력 자동화 시스템 개발", "category": "RPA / 회계 자동화", "tagline": "통장 거래내역 엑셀 파싱 및 희망이음 복식부기 자동 입력 시스템", "color": "#2563EB", "budget": "예상 금액 8,000,000원", "period": "예상 기간 50일", "deadline": "모집 마감 2026-09-22 (4일 16시간 남음)", "tech": "명시 없음(업무자동화·RPA, 엑셀 VBA·매크로)", "ai_suit": "중", "summary": "거래처가 보내는 통장 거래내역 엑셀을 분류해 희망이음(사회복지시설정보시스템)에 자동 등록하는 자동화 시스템 개발.", "screens": [["은행 통장 엑셀 업로드 & 거래 내역 자동 파싱", "국민/신한/농협 등 다중 은행 거래내역 통합 추출 및 중복 필터링"], ["AI 복식부기 계정과목 자동 매핑 규칙 엔진", "적요 키워드(전기요금, 식자재 등) 기반 관/항/목 예산 과목 자동 추천"], ["희망이음 전송 대기열 & 검토 인터페이스", "매핑 신뢰도 색상 구분, 미분류 항목 담당자 수동 확인 및 일괄 승인"], ["RPA 브라우저 자동화 전송 상태 실시간 관제", "희망이음 사이트 자동 로그인, 전표 등록 단계별 진행 프로그레스"], ["월별 예산 대비 지출 집행률 및 감사용 전표 리포트", "보조금 전용 통장 잔액 대조, 비목별 지출 현황 및 전자 증빙철"]]}, {"num": "17", "folder": "17_rcms_chemical_inventory", "title": "화학물질 통합재고관리(R-CMS) 현장용 안드로이드 앱 개발", "category": "안전 / 환경 / 모바일 ERP", "tagline": "화학물질 통합재고관리(R-CMS) 현장 단말기용 모바일 웹/앱", "color": "#DC2626", "budget": "예상 금액 12,000,000원", "period": "예상 기간 90일", "deadline": "모집 마감 2026-09-23 (5일 16시간 남음)", "tech": "Flutter, Java, Kotlin, Node.js", "ai_suit": "중", "summary": "화학물질 통합재고관리 솔루션(R-CMS)을 현장 휴대용 단말기에서 사용할 수 있는 안드로이드 앱 개발.", "screens": [["현장 바코드/QR 스캔 화학약품 입출고 처리", "바코드 스캔 즉시 물질명, CAS 번호, 순도, 보관 랙 번호 확인"], ["MSDS(물질안전보건자료) 긴급 열람 & 유해위험성 표시", "GHS 픽토그램, 누출 시 응급조치 요령, 개인 보호구 권장 사항"], ["보관소별 위험물 저장 한도 & 상호반응 금지 매트릭스", "산/염기 혼재 보관 경고, 지정수량 배수 초과 알림"], ["연구실/공장별 실시간 시약 재고 실사 모드", "남은 용량(%), 사용 책임자, 폐기 예정 시약 목록 및 일괄 실사"], ["화학물질관리법(화관법) 정부 제출용 입출고 대장", "법적 서식 자동 생성, 연간 사용량 집계 및 장외영향평가 데이터"]]}, {"num": "18", "folder": "18_lms_skin_management", "title": "사내 LMS관리 홈페이지 스킨변경 작업", "category": "LMS / 이러닝 / UI 테마", "tagline": "사내 임직원 직무교육 LMS 포털 모던 스킨 테마 개편", "color": "#475569", "budget": "예상 금액 3,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-23 (5일 16시간 남음)", "tech": "PHP, tailwind", "ai_suit": "상", "summary": "사내 LMS 홈페이지의 무분별한 스타일을 구매한 유료 템플릿으로 일괄 변경.", "screens": [["학습자 메인 대시보드 (수강 중인 강의 & 진도율 프로그레스)", "진행 중인 법정의무교육, 북마크 강의, 퀴즈 마감 D-day 위젯"], ["강의 재생 플레이어 & 인터랙티브 챕터 북마크", "배속 재생, 배속 방지 진도 체크, 강의 노트 작성 및 Q&A 패널"], ["사내 교육 카테고리별 강의 카탈로그 (필터 & 검색)", "IT/경영/리더십/어학 카테고리, 수강 후기 별점 및 추천 코스"], ["관리자 테마 커스터마이저 (다크/라이트 & 브랜드 컬러)", "회사 로고 반영, 메인 배너 슬라이더 설정, 폰트/버튼 스타일 실시간 프리뷰"], ["부서별 수강 완료율 & 평가 시험 점수 분석 통계", "부서별 이수율 랭킹, 미이수자 독려 메일 발송, 성적 엑셀 다운로드"]]}, {"num": "19", "folder": "19_manufacturing_homepage", "title": "제조 기업 홈페이지 구축", "category": "제조업 / 기업 소개", "tagline": "30년 철구조물·플랜트 OEM 제조업체 공식 반응형 홈페이지", "color": "#4B5563", "budget": "예상 금액 3,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-23 (5일 16시간 남음)", "tech": "명시 없음(아임웹/워드프레스 템플릿)", "ai_suit": "중", "summary": "30년 철구조물 OEM 제조업체의 회사소개·특허·제품 카탈로그 홈페이지를 템플릿 기반으로 실속 제작.", "screens": [["엔터프라이즈 제조사 메인 히어로 & 공장 전경 영상", "설립 30년 역사, 연간 생산 능력(CAPA), 글로벌 수출국가 현황"], ["철구조물·배관 플랜트 핵심 제품군 디지털 카탈로그", "H형강, 교량 강재, 플랜트 모듈러 스펙 시트 및 인증 마크"], ["보유 설비 & 품질 보증 테스트 장비 안내", "레이저 절단기, 자동 용접 로봇, 초음파 비파괴 검사(UT) 설비"], ["특허 기술 & ISO 9001/14001 인증서 아카이브", "국내외 특허 보유 목록, 기술 평가 우수기업 인증서 열람"], ["도면 업로드 기반 온라인 제작 견적 문의 폼", "CAD 도면 파일 첨부, 납기일/재질 선택 및 전담 영업 엔지니어 매칭"]]}, {"num": "20", "folder": "20_social_coop_homepage", "title": "사회적협동조합 홈페이지 구축", "category": "사회적경제 / 비영리", "tagline": "사회적협동조합 공익 사업 소개 및 조합원 참여 커뮤니티", "color": "#059669", "budget": "예상 금액 5,000,000원", "period": "예상 기간 20일", "deadline": "모집 마감 2026-09-23 (5일 16시간 남음)", "tech": "명시 없음", "ai_suit": "상", "summary": "사회적협동조합의 소개·사업 신청 접수·회원 커뮤니티를 포함한 공식 홈페이지 신규 구축.", "screens": [["따뜻한 가치 중심의 협동조합 비전 & 사업 소개", "지역 돌봄, 친환경 로컬푸드, 취약계층 일자리 창출 프로젝트 소개"], ["진행 중인 지원 사업 공고 & 간편 온라인 접수", "수혜자 지원 프로그램 신청, 필수 제출 서류 첨부 및 접수 확인"], ["조합원 가입 신청 & 출자금 안내", "개인/단체 조합원 권리 안내, 출자 1좌 신청 및 전자 동의 서명"], ["투명 경영 공시 & 연간 활동 보고서", "월별 재정 결산, 정기 총회 의결 안건 및 사업 실적 공시"], ["조합원 소통 커뮤니티 & 소모임 활동 갤러리", "봉사활동 사진첩, 재능 나눔 게시판, 지역 주민 소모임 신청"]]}, {"num": "21", "folder": "21_content_media_magazine", "title": "콘텐츠 미디어 홈페이지 UI/UX 전면 리뉴얼 및 기능 추가", "category": "미디어 / 매거진 / 뉴스", "tagline": "여가·라이프스타일 매거진형 콘텐츠 미디어 전면 리뉴얼", "color": "#E11D48", "budget": "예상 금액 17,000,000원", "period": "예상 기간 75일", "deadline": "모집 마감 2026-09-24 (6일 16시간 남음)", "tech": "GitHub, next.js, Node.js, React, TypeScript", "ai_suit": "중", "summary": "여가·라이프스타일 콘텐츠 미디어 홈페이지를 매거진 형태로 전면 개편, SEO·관리자 기능 고도화.", "screens": [["트렌디한 그리드 레이아웃의 매거진 메인 피드", "헤드라인 빅 스토리, 큐레이션 에디터 픽, 실시간 인기 기사 순위"], ["고품질 사진 중심의 아티클 상세 리딩 뷰어", "읽기 편한 타이포그래피, 이미지 슬라이더, 관련 기사 스마트 추천"], ["테마별 큐레이션 (여행/미식/캠핑/문화) 아카이브", "해시태그 기반 테마 필터, 지역별 여행지 지도 핀 뷰"], ["에디터 전용 블록 기반 위지윅(WYSIWYG) CMS", "드래그 앤 드롭 문단 배치, 저작권 이미지 메타데이터 관리"], ["구독자 뉴스레터 신청 & 멤버십 프리미엄 콘텐츠", "주간 이메일 레터 구독 폼, 유료 독자 전용 심층 리포트 열람"]]}, {"num": "22", "folder": "22_research_lab_website", "title": "연구소 웹사이트 반응형 재구축 및 DB 이관", "category": "연구소 / 아카데믹 / 포털", "tagline": "대학 부설 연구소 웹사이트 반응형 재구축 및 연구 DB 이관", "color": "#1E3A8A", "budget": "예상 금액 5,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-24 (6일 16시간 남음)", "tech": "HTML5/CSS3, MySQL, PHP, WordPress", "ai_suit": "상", "summary": "구형 PHP 대학 부설 연구소 홈페이지를 워드프레스 기반 반응형 웹으로 재구축하고 게시판 데이터를 이관.", "screens": [["연구소 비전 & 핵심 연구분야 인터랙티브 다이어그램", "바이오·나노 융합 기술, 국책 연구과제 요약, 연구소장 인사말"], ["국내외 학술 논문(SCI) 및 특허 아카이브 검색", "저자, 연도, 저널명, 인용 지수(IF) 기반 논문 전문 다운로드"], ["연구진 및 참여 대학원생 연구원 프로필", "수석 연구원 연구 실적, 진행 중인 프로젝트, 연구실 연락처"], ["공동 활용 첨단 연구 장비 예약 시스템", "전자현미경(SEM), 질량분석기 등 장비 가동 캘린더 및 사용료 정산"], ["연구 성과 기술이전 및 산학협력 상담 센터", "특허 기술 상세 소개서, 기업 기술이전 절차 및 산학 프로젝트 신청"]]}, {"num": "23", "folder": "23_kmea_evaluation_system", "title": "기존 PHP 웹 프로그램 수탁 및 유지보수(월 40만 원)", "category": "공공 행정 / 평가인증 / PHP", "tagline": "전국 한의과대학 평가인증 온라인시스템(eKMEA) 유지보수 포털", "color": "#0F766E", "budget": "예상 금액 4,800,000원(월 40만원×12개월)", "period": "예상 기간 365일", "deadline": "모집 마감 2026-09-25 (1주 남음)", "tech": "MySQL, PHP", "ai_suit": "중", "summary": "전국 한의과대학이 사용하는 평가인증 온라인시스템(eKMEA)의 서버 운영 및 유지보수 위탁.", "screens": [["대학별 평가인증 자체평가연구보고서 입력 포털", "기준별(교육목표/교육과정/교수진) 정량·정성 지표 온라인 기안"], ["평가위원 심사 점수표 & 정밀 검수 인터페이스", "대학 제출 증빙자료와 기준 대조, 평가위원별 평점 입력 및 종합 의견"], ["평가 결과 판정 대시보드 & 시정조치 추적기", "우수/인증/조건부인증 상태 판정, 연도별 이행 실적 관리"], ["전국 대학 통계 비교 & 연차별 지표 변화 그래프", "12개 한의대 평균 대비 교육 투자비, 임상실습 시간 비교 분석"], ["보안 인증 & 서버 인프라 상태 모니터링 콘솔", "개인정보 암호화, SSL 인증서 갱신, 백업 무결성 점검 로그"]]}, {"num": "24", "folder": "24_massage_map_search", "title": "고양·파주 마사지샵 지도 검색 모바일 웹 1차 구축", "category": "지도 / LBS / PWA", "tagline": "고양·파주 지역 마사지·테라피샵 지도 검색 모바일 웹(PWA)", "color": "#84CC16", "budget": "예상 금액 8,000,000원", "period": "예상 기간 60일", "deadline": "모집 마감 2026-09-25 (1주 남음)", "tech": "명시 없음(지도 API + PWA)", "ai_suit": "상", "summary": "고양·파주 지역 마사지샵을 지도에서 찾아 바로 전화 연결하는 비회원용 모바일 웹(PWA)+관리자 웹 구축.", "screens": [["내 주변 마사지샵 지도 핀 & 실시간 필터", "네이버/카카오 지도 기반, 타이/아로마/체형교정/수면가능 필터"], ["업체 상세 카드 & 원클릭 안심 전화 연결", "영업시간, 주차 가능 여부, 코스별 정찰제 가격표 및 전화 바로걸기"], ["일산/파주 역세권별 빠른 바로가기 퀵 메뉴", "정발산역, 백석역, 야당역, 운정역 등 지하철역 중심 추천 샵"], ["방문자 생생 포토 리뷰 & 청결도 평가", "실제 이용자 평점, 시설 청결도/친절도 별점 및 샵 내부 사진"], ["샵 점주 전용 매장 정보 수정 & 할인 쿠폰 등록 웹", "점주 로그인 후 이벤트 등록, 당일 타임특가 등록 관리"]]}, {"num": "25", "folder": "25_infra_3d_mesh_saas", "title": "인프라 점검 데이터 3D 외관조사망도 제공 웹 SaaS MVP 개발", "category": "토목 / 건설 SaaS / 3D", "tagline": "교량·터널 안전진단 데이터 3D 외관조사망도 제공 웹 SaaS MVP", "color": "#EA580C", "budget": "예상 금액 10,000,000원", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-25 (1주 남음)", "tech": "명시 없음", "ai_suit": "상", "summary": "안전진단 업체가 점검 데이터를 업로드하고 분석된 3D 외관조사망도를 확인하는 웹 SaaS 플랫폼 MVP 개발.", "screens": [["교량 3D 메쉬 모델 위 결함 매핑 뷰어 (균열/박리/누수)", "구조물 3D 모델에 결함 좌표를 오버레이하여 시각화"], ["균열 폭·길이 자동 측정 및 등급별(A~E) 컬러 코딩", "0.2mm 이상 균열 적색 표시, 상태평가 기준 자동 분류"], ["점검 데이터(사진/LiDAR/도면) 일괄 업로드 파이프라인", "드론 촬영 고해상도 타일링 이미지 업로드 및 정사영상 생성"], ["법정 안전점검 외관조사망도 CAD 도면 자동 생성", "정면도/평면도 상 결함 기호 표준 도면(DXF/DWG) 내보내기"], ["시설물 종합 상태평가 안전등급 판정 리포트", "손상 면적 비율 계산, 내구성 지수 및 보수·보강 우선순위 제안"]]}, {"num": "26", "folder": "26_edu_landing_conversion", "title": "교육재단초등관 상담전환형 랜딩페이지 기획·디자인·제작", "category": "마케팅 / 랜딩페이지", "tagline": "교육재단 초등관 학부모 상담 전환형 반응형 랜딩페이지", "color": "#8B5CF6", "budget": "예상 금액 1,500,000원", "period": "예상 기간 20일", "deadline": "모집 마감 2026-09-27 (1주 2일 남음)", "tech": "WordPress, 아임웹", "ai_suit": "중", "summary": "교육재단 초등관 랜딩페이지를 기획부터 카피라이팅·디자인·제작·상담폼·전환측정 세팅까지 제작.", "screens": [["학부모 공감 헤드카피 & 몰입형 비주얼 히어로 섹션", "아이의 자기주도학습 고민 해결, 프리미엄 초등관 론칭 선착순 혜택"], ["초등 학년별 차별화 커리큘럼 & 학습 로드맵", "1~3학년 기초 문해력, 4~6학년 융합 사고력 커리큘럼 비교 카드"], ["실제 재원생 성적 향상 스토리 & 학부모 후기 인터뷰", "학습 습관 변화 인터뷰 영상 썸네일, 전후 성적표 인증 리뷰"], ["원클릭 1:1 심층 무료 학습 진단 신청 폼", "자녀 학년/거주지역 선택, 희망 상담 시간대 선택 간편 폼"], ["실시간 전환율 추적 & A/B 테스트 성과 대시보드", "스크롤 도달률, 버튼 클릭률(CTR), 광고 매체별 상담 신청 전환 수"]]}, {"num": "27", "folder": "27_godomall_seo_geo", "title": "고도몰 기반 기업 웹사이트 SEO·GEO 및 생성형 AI 검색 최적화 진단·개발", "category": "SEO / GEO / AI 검색", "tagline": "고도몰 쇼핑몰 Google SEO & 생성형 AI(GEO) 검색 최적화 진단기", "color": "#2563EB", "budget": "예상 금액 협의 후 결정", "period": "예상 기간 30일", "deadline": "모집 마감 2026-09-18 (16시간 남음)", "tech": "명시 없음", "ai_suit": "중", "summary": "고도몰 기반 기업 홈페이지의 Google SEO 및 생성형 AI 검색 노출 최적화를 진단하고 실제 개발·적용.", "screens": [["쇼핑몰 SEO/GEO 종합 건강 진단 스코어카드", "메타태그 무결성, 사이트 속도, Open Graph, 시맨틱 구조 89점 진단"], ["생성형 AI(Perplexity/ChatGPT) 상품 추천 노출 시뮬레이션", "AI 검색창에 질문 시 우리 쇼핑몰 상품 추천 언급 여부 테스트"], ["고도몰 상품 페이지 구조화 데이터(JSON-LD) 생성기", "Product, Offer, Review 스키마 태그 자동 생성 및 유효성 검사"], ["검색 엔진 크롤러 인덱싱 상태 및 깨진 링크 검출기", "404 에러 페이지, 중복 캐노니컬 URL, robots.txt 규칙 진단"], ["경쟁사 키워드 검색 노출 랭킹 비교 대시보드", "타겟 쇼핑 키워드 상위 노출 랭킹 추이, 백링크 수치 비교 분석"]]}, {"num": "28", "folder": "28_hwpx_auto_doc_system", "title": "제품표준서(HWPX) 자동 작성 웹 시스템 구축", "category": "문서 자동화 / LLM / HWPX", "tagline": "스펙 시트(PDF/엑셀) 분석 기반 표준서(HWPX) 자동 조판 시스템", "color": "#0284C7", "budget": "예상 금액 협의 후 결정", "period": "예상 기간 90일", "deadline": "모집 마감 2026-09-20 (2일 16시간 남음)", "tech": "명시 없음(LLM API 활용)", "ai_suit": "상", "summary": "스캔 PDF·엑셀을 입력받아 제품표준서(HWPX) 초안을 자동 작성하고 사람이 검토·승인하는 사내 웹 시스템 구축.", "screens": [["시험성적서·원자재 스펙 PDF/Excel 다중 업로드", "비정형 원본 문서 드래그 앤 드롭, OCR 파싱 및 텍스트 추출"], ["LLM 기반 표준 규격 항목 자동 매핑 & 검증 테이블", "인장강도, 화학조성비, 외형 규격을 사내 표준 포맷 항목에 매핑"], ["한글 HWPX 서식 실시간 위지윅(WYSIWYG) 미리보기", "공식 사내 서식 템플릿에 데이터 자동 바인딩된 문서 실시간 뷰어"], ["기술 엔지니어 최종 검토 및 수정·승인 결재선", "변경 사항 하이라이트, 승인자 디지털 서명 및 승인 이력 관리"], ["버전별 제품표준서 라이브러리 & HWPX 일괄 다운로드", "개정 번호(Rev.01), 변경 사유 추적, 서명 완료 정식 HWPX 다운로드"]]}, {"num": "29", "folder": "29_scalp_ai_diagnosis", "title": "AI 두피진단 서비스 구축(AI 모델 개발 포함)", "category": "AI 뷰티 / 딥러닝 / 진단", "tagline": "고배율 확대경 촬영 이미지 기반 두피 AI 진단 & 맞춤 솔루션 플랫폼", "color": "#7C3AED", "budget": "예상 금액 협의 후 결정", "period": "예상 기간 90일", "deadline": "모집 마감 2026-09-25 (1주 남음)", "tech": "명시 없음", "ai_suit": "중", "summary": "매장에서 두피를 촬영·문진해 AI가 표준화된 진단 결과와 제품을 추천하는 AI 두피진단 플랫폼 구축.", "screens": [["매장용 두피 진단 스캐너 무선 연동 & 실시간 촬영", "정수리, 측두부, 후두부 60배 확대경 Wi-Fi 실시간 캡처 화면"], ["AI 두피 6대 유형 정밀 분석 (탈모/유분/각질/혈관/모공/모발)", "YOLO/ResNet 기반 모공당 모발 수, 각질 두께, 홍반 면적 세그멘테이션"], ["고객용 인터랙티브 두피 종합 진단 리포트", "연령대비 모발 밀도 백분위, 건강한 두피 vs 내 두피 비교 뷰어"], ["진단 결과 맞춤형 샴푸·앰플 및 케어 루틴 추천", "지성/민감성/탈모 맞춤형 전문 헤어케어 제품 즉시 매칭 및 장바구니"], ["방문 회차별 두피 개선 추이 비교 (Before & After)", "1회차 대비 4주/8주 후 모공 청결도, 모발 굵기 변화 타임라인"]]}];
+var currentFilter = 'all';
+var currentModalProj = null;
+
+function renderProjects() {
+    var grid = document.getElementById('projectGrid');
+    var q = document.getElementById('searchInput').value.toLowerCase().trim();
+    
+    var filtered = PROJECTS.filter(function(p) {
+        var matchText = !q || 
+            p.title.toLowerCase().indexOf(q) !== -1 || 
+            p.summary.toLowerCase().indexOf(q) !== -1 || 
+            p.category.toLowerCase().indexOf(q) !== -1 || 
+            p.tech.toLowerCase().indexOf(q) !== -1;
+            
+        if (!matchText) return false;
+        
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'AI:상') return p.ai_suit === '상';
+        if (currentFilter === 'AI:중') return p.ai_suit === '중';
+        if (currentFilter === 'AI:하') return p.ai_suit === '하';
+        if (currentFilter === '3D/AI') return p.category.indexOf('3D') !== -1 || p.category.indexOf('AI') !== -1 || p.category.indexOf('ML') !== -1;
+        if (currentFilter === '웹/SaaS') return p.category.indexOf('웹') !== -1 || p.category.indexOf('SaaS') !== -1 || p.category.indexOf('CRM') !== -1;
+        return true;
+    });
+
+    var html = '';
+    for (var i = 0; i < filtered.length; i++) {
+        var p = filtered[i];
+        html += '<div class="card">';
+        html += '  <div class="card-thumb" onclick="openProjectModal(\'' + p.folder + '\')">';
+        html += '    <img src="./' + p.folder + '/screenshots/demo_1.png" alt="' + p.title + ' 썸네일">';
+        html += '    <div class="thumb-overlay"><span class="thumb-tag">📸 벤치마크 스크린샷 5종 포함</span></div>';
+        html += '  </div>';
+        html += '  <div class="card-body">';
+        html += '    <div class="card-meta-top">';
+        html += '      <span class="card-category">[' + p.num + '] ' + p.category + '</span>';
+        html += '      <span class="ai-tag ai-' + p.ai_suit + '">AI 적합도: ' + p.ai_suit + '</span>';
+        html += '    </div>';
+        html += '    <h3 class="card-title">' + p.title + '</h3>';
+        html += '    <p class="card-summary">' + p.summary + '</p>';
+        html += '    <div class="info-grid">';
+        html += '      <div class="info-row"><span>예산:</span><strong>' + p.budget + '</strong></div>';
+        html += '      <div class="info-row"><span>기간:</span><strong>' + p.period + '</strong></div>';
+        html += '      <div class="info-row" style="grid-column:span 2;"><span>스택:</span><strong>' + p.tech + '</strong></div>';
+        html += '    </div>';
+        html += '    <div class="card-actions">';
+        html += '      <a href="./' + p.folder + '/index.html" class="btn-demo"><span>⚡</span> 웹 데모 실행</a>';
+        html += '      <button class="btn-preview" onclick="openProjectModal(\'' + p.folder + '\')"><span>📸</span> 스크린샷 5종</button>';
+        html += '    </div>';
+        html += '  </div>';
+        html += '</div>';
+    }
+    grid.innerHTML = html;
+}
+
+function setFilter(f, btn) {
+    currentFilter = f;
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
+    }
+    btn.classList.add('active');
+    renderProjects();
+}
+
+function filterProjects() {
+    renderProjects();
+}
+
+function openProjectModal(folder) {
+    var proj = null;
+    for (var i = 0; i < PROJECTS.length; i++) {
+        if (PROJECTS[i].folder === folder) {
+            proj = PROJECTS[i];
+            break;
+        }
+    }
+    if (!proj) return;
+    currentModalProj = proj;
+    document.getElementById('modalProjectTitle').innerText = '[' + proj.num + '] ' + proj.title + ' - 벤치마크 스크린샷 5종';
+    
+    var nav = document.getElementById('screenNav');
+    var navHtml = '';
+    for (var idx = 0; idx < proj.screens.length; idx++) {
+        var s = proj.screens[idx];
+        var act = idx === 0 ? 'active' : '';
+        navHtml += '<button class="screen-nav-btn ' + act + '" onclick="showModalScreen(' + (idx + 1) + ')">0' + (idx + 1) + '. ' + s[0] + '</button>';
+    }
+    nav.innerHTML = navHtml;
+    
+    showModalScreen(1);
+    document.getElementById('screenshotModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('screenshotModal').classList.remove('active');
+}
+
+function showModalScreen(idx) {
+    if (!currentModalProj) return;
+    var btns = document.querySelectorAll('.screen-nav-btn');
+    for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('active', (i + 1) === idx);
+    }
+    var img = document.getElementById('previewImg');
+    img.src = './' + currentModalProj.folder + '/screenshots/demo_' + idx + '.png';
+    
+    var s = currentModalProj.screens[idx - 1];
+    document.getElementById('screenTitle').innerText = idx + '. ' + s[0];
+    document.getElementById('screenDesc').innerText = s[1];
+}
+
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+});
+
+renderProjects();
+</script>
+
+</body>
+</html>
